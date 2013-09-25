@@ -31,6 +31,17 @@ In Javascript, you can do something like this:
 CameraRoll.getPhotos(function(photo) {
   // Photo is a URL pointing to the asset. It's prefixed asset-library:// 
   // So if you are using Angular and ng-src, make sure to whitelist this URL scheme.
+  //
+  // This callback will be called for each photo in the roll. It's async, yo!
 });
 
 ```
+
+
+TODO
+-----
+
+Need to do some more testing for failure conditions and permission things.
+
+Also, I want to add block-style reading where you can read in a block of photos at a time, which gives you a little more
+control and performance over the loading.
