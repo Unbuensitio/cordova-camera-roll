@@ -15,7 +15,22 @@ with this plugin for a variety of reasons (possibly Android in the future though
 
 
 Installation
-==========================
+------------
 To install this plugin, follow the [Command-line Interface Guide](http://cordova.apache.org/docs/en/edge/guide_cli_index.md.html#The%20Command-line%20Interface).
 
 If you are not using the Cordova Command-line Interface, follow [Using Plugman to Manage Plugins](http://cordova.apache.org/docs/en/edge/plugin_ref_plugman.md.html).
+
+Usage
+-----
+
+To use this plugin, make sure you install it just like any Cordova/PhoneGap plugin.
+
+In Javascript, you can do something like this:
+
+```javascript
+CameraRoll.getPhotos(function(photo) {
+  // Photo is a URL pointing to the asset. It's prefixed asset-library:// 
+  // So if you are using Angular and ng-src, make sure to whitelist this URL scheme.
+});
+
+```
