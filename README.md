@@ -1,7 +1,7 @@
 Cordova Camera Roll
 ==========================
 
-Created by Max Lynch [@maxlynch](http://twitter.com/maxlynch)
+Created by Max Lynch [@maxlynch](http://twitter.com/maxlynch). For Cordova 3.0+
 
 The Cordova Camera Roll plugin makes it easy to read from the iOS camera roll.
 
@@ -31,6 +31,8 @@ In Javascript, you can do something like this:
 CameraRoll.getPhotos(function(photo) {
   // Photo is a URL pointing to the asset. It's prefixed asset-library:// 
   // So if you are using Angular and ng-src, make sure to whitelist this URL scheme.
+  //
+  // You can use "photo" directly in an img src or as a background-image in CSS.
   //
   // This callback will be called for each photo in the roll. It's async, yo!
 });
