@@ -36,7 +36,7 @@
   // save the image to photo album
   UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
 
-  CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"saved"};
+  CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"saved"];
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 /**
