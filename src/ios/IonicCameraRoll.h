@@ -7,5 +7,6 @@
 {}
 
 - (void)getPhotos:(CDVInvokedUrlCommand*)command;
+- (void)saveToCameraRoll:(CDVInvokedUrlCommand*)command;
 
 @end
