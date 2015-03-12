@@ -28,6 +28,12 @@ To use this plugin, make sure you install it just like any Cordova/PhoneGap plug
 In Javascript, you can do something like this:
 
 ```javascript
+
+// Quickly save a base-64 encoded data uri to the cameraroll.
+CamerRoll.saveToCameraRoll(base64String, function() {
+}, function(err) {
+});
+
 CameraRoll.getPhotos(function(photo) {
   // Photo is a URL pointing to the asset. It's prefixed asset-library:// 
   // So if you are using Angular and ng-src, make sure to whitelist this URL scheme.
