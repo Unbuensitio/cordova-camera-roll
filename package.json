@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-camera-roll",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "cordova": {
     "id": "cordova-plugin-camera-roll",
     "platforms": [
@@ -8,8 +8,8 @@
     ]
   },
   "description": "Cordova CameraRoll Plugin",
-  "repository": "https://github.com/driftyco/cordova-plugin-cameraroll.git",
-  "issue": "https://github.com/driftyco/cordova-plugin-cameraroll/issues",
+  "repository": "https://github.com/driftyco/cordova-plugin-camera-roll.git",
+  "issue": "https://github.com/driftyco/cordova-plugin-camera-roll/issues",
   "keywords": [
     "ionic",
     "cordova",
