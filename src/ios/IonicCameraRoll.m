@@ -74,12 +74,13 @@
           NSDate* date = [result valueForProperty:ALAssetPropertyDate];
 
           [urls enumerateKeysAndObjectsUsingBlock:^(id key, NSURL *obj, BOOL *stop) {
-
-            // Send the URL for this asset back to the JS callback
-            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithInt:date.timeIntervalSince1970]}];
-            [pluginResult setKeepCallbackAsBool:YES];
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-          
+             //Only return JPG
+             if ([key isEqualToString:@"public.jpeg"]) {
+                 // Send the URL for this asset back to the JS callback
+                 CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithInt:date.timeIntervalSince1970]}];
+                 [pluginResult setKeepCallbackAsBool:YES];
+                 [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+             }
           }];
         }];
       }
