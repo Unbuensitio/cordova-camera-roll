@@ -1,12 +1,14 @@
 package com.drifty.cordova.cameraroll;
 
-import android.net.Uri;
+import java.io.IOException;
 import java.util.ArrayList;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONException;
 import android.database.Cursor;
 import android.provider.MediaStore;
-
-import org.json.JSONArray;
-import org.json.JSONException;
+import android.media.ExifInterface;
+import android.net.Uri;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -38,7 +40,8 @@ public class IonicCameraRoll extends CordovaPlugin {
         ArrayList<String> listOfAllImages = new ArrayList<String>();
         Cursor cursor;
         int column_index_data, column_index_folder_name;
-        String PathOfImage = null;
+        String pathOfImage = null;
+        String dateOfImage = null;
         uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
         String[] projection = { MediaStore.MediaColumns.DATA,
@@ -51,12 +54,32 @@ public class IonicCameraRoll extends CordovaPlugin {
         column_index_folder_name = cursor
                 .getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
         while (cursor.moveToNext()) {
-            PathOfImage = cursor.getString(column_index_data);
+            pathOfImage = cursor.getString(column_index_data);
+            dateOfImage = dateFromImagePath(pathOfImage);
 
-            PluginResult r = new PluginResult(PluginResult.Status.OK, PathOfImage);
+            JSONObject json = new JSONObject();
+            json.put("path", pathOfImage);
+            json.put("date", dateOfImage);
+
+            PluginResult r = new PluginResult(PluginResult.Status.OK, json);
             r.setKeepCallback(true);
             this.callbackContext.sendPluginResult(r);
         }
+    }
 
+    private String dateFromImagePath(String path) {
+        ExifInterface intf = null;
+        try {
+            intf = new ExifInterface(path);
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+
+        if(intf != null) {
+            return intf.getAttribute(ExifInterface.TAG_DATETIME);
+        }
+
+        return null;
     }
 }
