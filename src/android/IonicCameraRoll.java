@@ -1,6 +1,9 @@
 package com.drifty.cordova.cameraroll;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,6 +24,7 @@ public class IonicCameraRoll extends CordovaPlugin {
 	public final String ACTION_SAVE = "saveToCameraRoll";
 
     private CallbackContext callbackContext;
+    private DateFormat formatter;
 
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -41,7 +45,7 @@ public class IonicCameraRoll extends CordovaPlugin {
         Cursor cursor;
         int column_index_data, column_index_folder_name;
         String pathOfImage = null;
-        String dateOfImage = null;
+        long dateOfImage = 0;
         uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
         String[] projection = { MediaStore.MediaColumns.DATA,
@@ -51,8 +55,9 @@ public class IonicCameraRoll extends CordovaPlugin {
                 null, null);
 
         column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-        column_index_folder_name = cursor
-                .getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
+
+        formatter = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
+
         while (cursor.moveToNext()) {
             pathOfImage = cursor.getString(column_index_data);
             dateOfImage = dateFromImagePath(pathOfImage);
@@ -67,7 +72,7 @@ public class IonicCameraRoll extends CordovaPlugin {
         }
     }
 
-    private String dateFromImagePath(String path) {
+    private long dateFromImagePath(String path) {
         ExifInterface intf = null;
         try {
             intf = new ExifInterface(path);
@@ -77,9 +82,15 @@ public class IonicCameraRoll extends CordovaPlugin {
         }
 
         if(intf != null) {
-            return intf.getAttribute(ExifInterface.TAG_DATETIME);
+            String date = intf.getAttribute(ExifInterface.TAG_DATETIME);
+            try {
+                return formatter.parse(date).getTime();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
         }
 
-        return null;
+        return 0;
     }
 }
