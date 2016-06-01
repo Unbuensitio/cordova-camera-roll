@@ -4,7 +4,8 @@
   "cordova": {
     "id": "cordova-plugin-camera-roll",
     "platforms": [
-      "ios"
+      "ios",
+      "android"
     ]
   },
   "description": "Cordova CameraRoll Plugin",
@@ -15,7 +16,8 @@
     "cordova",
     "cameraroll",
     "ecosystem:cordova",
-    "cordova-ios"
+    "cordova-ios",
+    "cordova-android"
   ],
   "author": "Ionic",
   "license": "Apache 2.0"
