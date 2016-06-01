@@ -70,6 +70,11 @@ public class IonicCameraRoll extends CordovaPlugin {
             r.setKeepCallback(true);
             this.callbackContext.sendPluginResult(r);
         }
+
+        // Send empty JSON to indicate the end of photostreaming
+        PluginResult r = new PluginResult(PluginResult.Status.OK, new JSONObject());
+        r.setKeepCallback(true);
+        this.callbackContext.sendPluginResult(r);
     }
 
     private long dateFromImagePath(String path) {
