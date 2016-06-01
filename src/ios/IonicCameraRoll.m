@@ -56,18 +56,9 @@
     // Enumerate all of the group saved photos, which is our Camera Roll on iOS
     [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
       
-      // When there are no more images, the group will be nil
-      if(group == nil) {
-        
-        // Send a null response to indicate the end of photostreaming
-        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:nil];
-        [pluginResult setKeepCallbackAsBool:YES];
-        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-      
-      } else {
-        
+      if(group != nil) {
+
         // Enumarate this group of images
-        
         [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
           
           NSDictionary *urls = [result valueForProperty:ALAssetPropertyURLs];
