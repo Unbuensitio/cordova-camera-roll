@@ -76,7 +76,7 @@
              //Only return JPG
              if ([key isEqualToString:@"public.jpeg"]) {
                  // Send the URL for this asset back to the JS callback
-                 CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithInt:date.timeIntervalSince1970*1000]}];
+                 CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                  [pluginResult setKeepCallbackAsBool:YES];
                  [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
              }
