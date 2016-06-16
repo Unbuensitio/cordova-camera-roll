@@ -70,6 +70,11 @@ public class IonicCameraRoll extends CordovaPlugin {
             r.setKeepCallback(true);
             this.callbackContext.sendPluginResult(r);
         }
+
+        // Send empty JSON to indicate the end of photostreaming
+        PluginResult r = new PluginResult(PluginResult.Status.OK, new JSONObject());
+        r.setKeepCallback(true);
+        this.callbackContext.sendPluginResult(r);
     }
 
     private long dateFromImagePath(String path) {
@@ -81,14 +86,20 @@ public class IonicCameraRoll extends CordovaPlugin {
             e.printStackTrace();
         }
 
-        if(intf != null) {
+        if (intf != null) {
             String date = intf.getAttribute(ExifInterface.TAG_DATETIME);
-            try {
-                return formatter.parse(date).getTime();
-            } catch (ParseException e) {
-                e.printStackTrace();
+            if (date != null) {
+                try {
+                    return formatter.parse(date).getTime();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                File file = new File(path);
+                if (file.exists()) {
+                    return file.lastModified()/1000;
+                }
             }
-
         }
 
         return 0;

@@ -56,7 +56,15 @@
     // Enumerate all of the group saved photos, which is our Camera Roll on iOS
     [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
       
-      if(group != nil) {
+      // When there are no more images, the group will be nil
+      if(group == nil) {
+        
+        // Send empty JSON to indicate the end of photostreaming
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{}];
+        [pluginResult setKeepCallbackAsBool:YES];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+      
+      } else {
 
         // Enumarate this group of images
         [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
@@ -68,7 +76,7 @@
              //Only return JPG
              if ([key isEqualToString:@"public.jpeg"]) {
                  // Send the URL for this asset back to the JS callback
-                 CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithInt:date.timeIntervalSince1970*1000]}];
+                 CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                  [pluginResult setKeepCallbackAsBool:YES];
                  [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
              }
