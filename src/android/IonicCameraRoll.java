@@ -86,14 +86,20 @@ public class IonicCameraRoll extends CordovaPlugin {
             e.printStackTrace();
         }
 
-        if(intf != null) {
+        if (intf != null) {
             String date = intf.getAttribute(ExifInterface.TAG_DATETIME);
-            try {
-                return formatter.parse(date).getTime();
-            } catch (ParseException e) {
-                e.printStackTrace();
+            if (date != null) {
+                try {
+                    return formatter.parse(date).getTime();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                File file = new File(path);
+                if (file.exists()) {
+                    return file.lastModified()/1000;
+                }
             }
-
         }
 
         return 0;
