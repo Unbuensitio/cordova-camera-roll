@@ -97,7 +97,7 @@ public class IonicCameraRoll extends CordovaPlugin {
             } else {
                 File file = new File(path);
                 if (file.exists()) {
-                    return file.lastModified()/1000;
+                    return file.lastModified();
                 }
             }
         }
