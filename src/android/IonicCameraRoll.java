@@ -47,6 +47,8 @@ public class IonicCameraRoll extends CordovaPlugin {
         int column_index_data, column_index_folder_name;
         String pathOfImage = null;
         long dateOfImage = 0;
+        int photoCount = 0;
+        int maxPhotoCount = 11;
         uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
         String[] projection = { MediaStore.MediaColumns.DATA,
@@ -59,17 +61,20 @@ public class IonicCameraRoll extends CordovaPlugin {
 
         formatter = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
 
-        while (cursor.moveToNext()) {
-            pathOfImage = cursor.getString(column_index_data);
-            dateOfImage = dateFromImagePath(pathOfImage);
+        if (cursor.moveToLast()) {
+            while (photoCount < maxPhotoCount && (photoCount == 0 || cursor.moveToPrevious())) {
+                pathOfImage = cursor.getString(column_index_data);
+                dateOfImage = dateFromImagePath(pathOfImage);
 
-            JSONObject json = new JSONObject();
-            json.put("path", pathOfImage);
-            json.put("date", dateOfImage);
+                JSONObject json = new JSONObject();
+                json.put("path", pathOfImage);
+                json.put("date", dateOfImage);
+                photoCount++;
 
-            PluginResult r = new PluginResult(PluginResult.Status.OK, json);
-            r.setKeepCallback(true);
-            this.callbackContext.sendPluginResult(r);
+                PluginResult r = new PluginResult(PluginResult.Status.OK, json);
+                r.setKeepCallback(true);
+                this.callbackContext.sendPluginResult(r);
+            }
         }
 
         // Send empty JSON to indicate the end of photostreaming
