@@ -1,5 +1,6 @@
 package com.drifty.cordova.cameraroll;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -97,7 +98,7 @@ public class IonicCameraRoll extends CordovaPlugin {
             } else {
                 File file = new File(path);
                 if (file.exists()) {
-                    return file.lastModified()/1000;
+                    return file.lastModified();
                 }
             }
         }
