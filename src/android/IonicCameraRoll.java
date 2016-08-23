@@ -25,14 +25,14 @@ public class IonicCameraRoll extends CordovaPlugin {
 	public final String ACTION_SAVE = "saveToCameraRoll";
 
     private CallbackContext callbackContext;
-    private DateFormat formatter;
+    private DateFormat formatter = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
 
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         this.callbackContext = callbackContext;
 
 		if (action.equals(ACTION_GET_PHOTOS)) {
-		    getPhotos();
+		    getPhotos(args.getInt(0));
             return true;
         } else if (action.equals(ACTION_SAVE)) {
             // Not implemented yet
@@ -40,36 +40,30 @@ public class IonicCameraRoll extends CordovaPlugin {
         return false;
     }
 
-    private void getPhotos() throws JSONException {
-        Uri uri;
-        ArrayList<String> listOfAllImages = new ArrayList<String>();
-        Cursor cursor;
-        int column_index_data, column_index_folder_name;
-        String pathOfImage = null;
-        long dateOfImage = 0;
-        uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+    private void getPhotos(int maxPhotoCount) throws JSONException {
+        int photoCount = 0;
+        boolean hasLimit = maxPhotoCount > 0;
 
-        String[] projection = { MediaStore.MediaColumns.DATA,
-                MediaStore.Images.Media.BUCKET_DISPLAY_NAME };
-
-        cursor = this.cordova.getActivity().getContentResolver().query(uri, projection, null,
+        Uri uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        String[] projection = { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME };
+        Cursor cursor = this.cordova.getActivity().getContentResolver().query(uri, projection, null,
                 null, null);
+        int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
 
-        column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-
-        formatter = new SimpleDateFormat("yyyy:MM:dd HH:mm:ss");
-
-        while (cursor.moveToNext()) {
-            pathOfImage = cursor.getString(column_index_data);
-            dateOfImage = dateFromImagePath(pathOfImage);
+        boolean hasImage = cursor.moveToLast();
+        while (hasImage && (!hasLimit || photoCount < maxPhotoCount)) {
+            String pathOfImage = cursor.getString(column_index_data);
 
             JSONObject json = new JSONObject();
             json.put("path", pathOfImage);
-            json.put("date", dateOfImage);
+            json.put("date", dateFromImagePath(pathOfImage));
+            photoCount++;
 
             PluginResult r = new PluginResult(PluginResult.Status.OK, json);
             r.setKeepCallback(true);
             this.callbackContext.sendPluginResult(r);
+
+            hasImage = cursor.moveToPrevious();
         }
 
         // Send empty JSON to indicate the end of photostreaming
