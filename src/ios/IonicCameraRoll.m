@@ -21,7 +21,7 @@
     dispatch_once(&pred, ^{
         library = [[ALAssetsLibrary alloc] init];
     });
-    
+
     // TODO: Dealloc this later?
     return library;
 }
@@ -59,7 +59,12 @@
     __block NSUInteger count = 0;
     ALAssetsLibrary *library = [IonicCameraRoll defaultAssetsLibrary];
 
+    // Block called at the end of the photostreaming
+    __block bool enumerationEnded = false;
     void (^signalEnumerationEnd)() = ^void() {
+        if (enumerationEnded) return;
+        enumerationEnded = true;
+
         // Send empty JSON to indicate the end of photostreaming
         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{}];
         [pluginResult setKeepCallbackAsBool:YES];
