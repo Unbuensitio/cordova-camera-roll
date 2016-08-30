@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
+
+import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
 import android.media.ExifInterface;
@@ -40,36 +42,73 @@ public class IonicCameraRoll extends CordovaPlugin {
         return false;
     }
 
+    /**
+     * Fetch both full sized images and thumbnails via a single query.
+     * Returns all images not in the Camera Roll.
+     */
     private void getPhotos(int maxPhotoCount) throws JSONException {
         int photoCount = 0;
         boolean hasLimit = maxPhotoCount > 0;
 
-        Uri uri = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        String[] projection = { MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME };
-        Cursor cursor = this.cordova.getActivity().getContentResolver().query(uri, projection, null,
-                null, null);
-        int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        final String[] projection = { MediaStore.Images.Thumbnails.DATA, MediaStore.Images.Thumbnails.IMAGE_ID };
 
-        boolean hasImage = cursor.moveToLast();
+        Context context = this.cordova.getActivity();
+        Cursor thumbnailsCursor = context.getContentResolver().query( MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
+                projection, // Which columns to return
+                null,       // Return all rows
+                null,
+                null);
+
+        // Extract the proper column thumbnails
+        int thumbnailColumnIndex = thumbnailsCursor.getColumnIndex(MediaStore.Images.Thumbnails.DATA);
+
+        boolean hasImage = thumbnailsCursor.moveToLast();
         while (hasImage && (!hasLimit || photoCount < maxPhotoCount)) {
-            String pathOfImage = cursor.getString(column_index_data);
+            // Get the tiny thumbnail and the full image path
+            int thumbnailImageID = thumbnailsCursor.getInt(thumbnailColumnIndex);
+            String thumbnailPath = thumbnailsCursor.getString(thumbnailImageID);
+            String fullImagePath = uriToFullImage(thumbnailsCursor, context);
 
+            // Create the result object
             JSONObject json = new JSONObject();
-            json.put("path", pathOfImage);
-            json.put("date", dateFromImagePath(pathOfImage));
-            photoCount++;
+            json.put("path", fullImagePath);
+            json.put("thumbnailPath", thumbnailPath);
+            json.put("date", dateFromImagePath(fullImagePath));
 
             PluginResult r = new PluginResult(PluginResult.Status.OK, json);
             r.setKeepCallback(true);
             this.callbackContext.sendPluginResult(r);
 
-            hasImage = cursor.moveToPrevious();
+            photoCount++;
+            hasImage = thumbnailsCursor.moveToPrevious();
         }
+        thumbnailsCursor.close();
 
         // Send empty JSON to indicate the end of photostreaming
         PluginResult r = new PluginResult(PluginResult.Status.OK, new JSONObject());
         r.setKeepCallback(true);
         this.callbackContext.sendPluginResult(r);
+    }
+
+    /**
+     * Get the path to the full image for a given thumbnail.
+     */
+    private static String uriToFullImage(Cursor thumbnailsCursor, Context context){
+        String imageId = thumbnailsCursor.getString(thumbnailsCursor.getColumnIndex(MediaStore.Images.Thumbnails.IMAGE_ID));
+
+        // Request image related to this thumbnail
+        String[] filePathColumn = { MediaStore.Images.Media.DATA };
+        Cursor imagesCursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, filePathColumn, MediaStore.Images.Media._ID + "=?", new String[]{imageId}, null);
+
+        if (imagesCursor != null && imagesCursor.moveToFirst()) {
+            int columnIndex = imagesCursor.getColumnIndex(filePathColumn[0]);
+            String filePath = imagesCursor.getString(columnIndex);
+            imagesCursor.close();
+            return filePath;
+        } else {
+            imagesCursor.close();
+            return "";
+        }
     }
 
     private long dateFromImagePath(String path) {
