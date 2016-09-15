@@ -20,6 +20,9 @@
              <param name="ios-package" value="IonicCameraRoll" />
            </feature>
          </config-file>
+         <config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescription">
+            <string>This apps displays a camera roll</string>
+         </config-file>
 
          <header-file src="src/ios/IonicCameraRoll.h" />
          <source-file src="src/ios/IonicCameraRoll.m" />
