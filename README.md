@@ -32,7 +32,7 @@ CameraRoll.getPhotos(function(photo) {
 }, function(err) {
   // Something bad happened :O
 }, {
-  limit: 12, // Optional, will only return the last N photos.
+  count: 12, // Optional, will only return the last N photos.
 });
 
 // (iOS only) Quickly save a base-64 encoded data uri to the camera roll.
