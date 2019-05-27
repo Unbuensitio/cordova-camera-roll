@@ -50,17 +50,17 @@ public class IonicCameraRoll extends CordovaPlugin {
         int photoCount = 0;
         boolean hasLimit = maxPhotoCount > 0;
 
-        final String[] projection = { MediaStore.Images.Thumbnails.DATA, MediaStore.Images.Thumbnails.IMAGE_ID };
+        final String[] projection = { MediaStore.Video.Thumbnails.DATA, MediaStore.Video.Thumbnails.IMAGE_ID };
 
         Context context = this.cordova.getActivity();
-        Cursor thumbnailsCursor = context.getContentResolver().query( MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
+        Cursor thumbnailsCursor = context.getContentResolver().query( MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI,
                 projection, // Which columns to return
                 null,       // Return all rows
                 null,
                 null);
 
         // Extract the proper column thumbnails
-        int thumbnailColumnIndex = thumbnailsCursor.getColumnIndex(MediaStore.Images.Thumbnails.DATA);
+        int thumbnailColumnIndex = thumbnailsCursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA);
 
         boolean hasImage = thumbnailsCursor.moveToLast();
         while (hasImage && (!hasLimit || photoCount < maxPhotoCount)) {
