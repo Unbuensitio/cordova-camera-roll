@@ -102,14 +102,92 @@
                     }
 
                     //Only return JPG
-                    //if ([key isEqualToString:@"public.jpeg"]) {
+                    if ([key isEqualToString:@"public.jpeg"]) {
                         // Send the URL for this asset back to the JS callback
                         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                         [pluginResult setKeepCallbackAsBool:YES];
                         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 
                         count++;
-                    //}
+                    }
+                }];
+            }];
+
+        } failureBlock:^(NSError *error) {
+            // Ruh-roh, something bad happened.
+            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }];
+    }];
+
+}
+
+- (void)getVideos:(CDVInvokedUrlCommand*)command
+{
+    NSUInteger limit = 0;
+    if ([command.arguments count] > 0) {
+        NSString* limitStr = [command.arguments objectAtIndex:0];
+        limit = [limitStr integerValue];
+    }
+    bool hasLimit = limit > 0;
+
+    NSLog(@"getPhotos called with limit: %tu", limit);
+
+    // Grab the asset library
+    __block NSUInteger count = 0;
+    ALAssetsLibrary *library = [IonicCameraRoll defaultAssetsLibrary];
+
+    // Block called at the end of the photostreaming
+    __block bool enumerationEnded = false;
+    void (^signalEnumerationEnd)() = ^void() {
+        if (enumerationEnded) return;
+        enumerationEnded = true;
+
+        // Send empty JSON to indicate the end of photostreaming
+        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{}];
+        [pluginResult setKeepCallbackAsBool:YES];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    };
+
+    // Run a background job
+    [self.commandDelegate runInBackground:^{
+
+        // Enumerate all of the group saved photos, which is our Camera Roll on iOS
+        [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+
+            // When there are no more images, the group will be nil
+            if(group == nil || (hasLimit && count >= limit)) {
+                signalEnumerationEnd();
+                return;
+            }
+
+            // Enumarate this group of images
+            [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+
+                if(hasLimit && count >= limit) {
+                    signalEnumerationEnd();
+                    return;
+                }
+
+                NSDictionary *urls = [result valueForProperty:ALAssetPropertyURLs];
+                NSDate* date = [result valueForProperty:ALAssetPropertyDate];
+
+                [urls enumerateKeysAndObjectsUsingBlock:^(id key, NSURL *obj, BOOL *stop) {
+
+                    if(hasLimit && count >= limit) {
+                        signalEnumerationEnd();
+                        return;
+                    }
+
+                    //Only return movie
+                    if ([key isEqualToString:@"public.movie"]) {
+                        // Send the URL for this asset back to the JS callback
+                        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
+                        [pluginResult setKeepCallbackAsBool:YES];
+                        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+
+                        count++;
+                    }
                 }];
             }];
 
