@@ -111,7 +111,7 @@ public class IonicCameraRoll extends CordovaPlugin {
 
         // Extract the proper column thumbnails
         int thumbnailColumnIndex = thumbnailsCursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA);
-	column_index_data = thumbnailColumnIndex.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+	column_index_data = thumbnailsCursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
 	    
         boolean hasImage = thumbnailsCursor.moveToLast();
         while (hasImage && (!hasLimit || photoCount < maxPhotoCount)) {
