@@ -198,8 +198,11 @@
                     CGImageRelease(imgRef);
                     NSData *imageData = UIImageJPEGRepresentation(thumbnail, quality);
                     
+                    NSString *inicio = @"data:image/jpeg;base64,";
+                    NSString *final = [imageData base64EncodedStringWithOptions:0];
+                    NSString* rutaImagen = [inicio stringByAppendingString:final];
                     //UIImage* thumb = [self VideoThumbNail:videoURL];
-                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"data:image/jpeg;base64," stringByAppendingString:[imageData base64EncodedStringWithOptions:0], @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
+                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"imagen": rutaImagen, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                     //CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                     [pluginResult setKeepCallbackAsBool:YES];
                     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
