@@ -178,7 +178,7 @@
                         return;
                     }
 
-                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"thum":[self getPlaceholderImageFromVideo:obj.absoluteString], @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
+                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"thum":[self loadThumbNail:obj.absoluteString], @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                     [pluginResult setKeepCallbackAsBool:YES];
                     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
                     count++;
@@ -196,16 +196,19 @@
 
 }
 
--(UIImage *)getPlaceholderImageFromVideo:(NSString *)videoURL {
-    NSURL *url = [NSURL URLWithString:videoURL];
-    AVAsset *asset = [AVAsset assetWithURL:url];
-    AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-    CMTime time = [asset duration];
-    time.value = 0;
-    CGImageRef imageRef = [imageGenerator copyCGImageAtTime:time actualTime:NULL error:NULL];
-    UIImage *thumbnail = [UIImage imageWithCGImage:imageRef];
-    CGImageRelease(imageRef);
-    return thumbnail;
+-(UIImage *)loadThumbNail:(NSURL *)urlVideo {
+     
+     AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:urlVideo options:nil];
+    
+     AVAssetImageGenerator *generate = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+     generate.appliesPreferredTrackTransform=TRUE;
+     
+     NSError *err = NULL;
+     CMTime time = CMTimeMake(1, 60);
+     CGImageRef imgRef = [generate copyCGImageAtTime:time actualTime:NULL error:&err];
+   
+     NSLog(@"err==%@, imageRef==%@", err, imgRef);
+     return [[UIImage alloc] initWithCGImage:imgRef];
 }
 
 @end
