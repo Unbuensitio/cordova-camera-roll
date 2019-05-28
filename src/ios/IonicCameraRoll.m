@@ -12,10 +12,19 @@
 #import "IonicCameraRoll.h"
 #import <AssetsLibrary/ALAssetRepresentation.h>
 #import <CoreLocation/CoreLocation.h>
-@import AVKit;
-@import AVFoundation;
-@property (nonatomic) AVPlayer *avPlayer; 
-@property (nonatomic) AVPlayerViewController* avPlayerView;
+
+#import "CDVCamera.h"
+#import "CDVJpegHeaderWriter.h"
+#import "UIImage+CropScaleOrientation.h"
+#import <ImageIO/CGImageProperties.h>
+#import <AssetsLibrary/ALAssetRepresentation.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <AVFoundation/AVFoundation.h>
+#import <ImageIO/CGImageSource.h>
+#import <ImageIO/CGImageProperties.h>
+#import <ImageIO/CGImageDestination.h>
+#import <MobileCoreServices/UTCoreTypes.h>
+#import <objc/message.h>
 
 @implementation IonicCameraRoll
 
