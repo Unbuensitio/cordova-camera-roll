@@ -205,7 +205,7 @@
 self.imageGenerator.appliesPreferredTrackTransform = YES; 
         CMTime time = [asset duration];
         time.value = 0;
-        Float duration = CMTimeGetSeconds([myAsset duration]);
+        Float duration = CMTimeGetSeconds([asset duration]);
    for(Float i = 0.0; i<duration; i=i+0.1)
     {
      CGImageRef imgRef = [self.imageGenerator copyCGImageAtTime:CMTimeMake(i, duration) actualTime:NULL error:nil];
