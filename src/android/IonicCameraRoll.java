@@ -23,6 +23,7 @@ import org.apache.cordova.PluginResult;
 public class IonicCameraRoll extends CordovaPlugin {
 
 	public final String ACTION_GET_PHOTOS = "getPhotos";
+	public final String ACTION_GET_VIDEOS = "getVideos";
 
 	public final String ACTION_SAVE = "saveToCameraRoll";
 
@@ -38,6 +39,9 @@ public class IonicCameraRoll extends CordovaPlugin {
             return true;
         } else if (action.equals(ACTION_SAVE)) {
             // Not implemented yet
+        }else if (action.equals(ACTION_GET_VIDEOS)) {
+            getVideos(args.getInt(0));
+            return true;
         }
         return false;
     }
@@ -90,6 +94,48 @@ public class IonicCameraRoll extends CordovaPlugin {
         r.setKeepCallback(true);
         this.callbackContext.sendPluginResult(r);
     }
+	
+    private void getVideos(int maxPhotoCount) throws JSONException {
+        int photoCount = 0;
+        boolean hasLimit = maxPhotoCount > 0;
+
+        final String[] projection = { MediaStore.Video.Thumbnails.DATA, MediaStore.Video.Media._ID };
+
+        Context context = this.cordova.getActivity();
+        Cursor thumbnailsCursor = context.getContentResolver().query( MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+                projection, // Which columns to return
+                null,       // Return all rows
+                null,
+                null);
+
+        // Extract the proper column thumbnails
+        int thumbnailColumnIndex = thumbnailsCursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA);
+
+        boolean hasImage = thumbnailsCursor.moveToLast();
+        while (hasImage && (!hasLimit || photoCount < maxPhotoCount)) {
+            // Get the tiny thumbnail and the full image path
+            String fullImagePath = uriToFullImage(thumbnailsCursor, context);
+
+            // Create the result object
+            JSONObject json = new JSONObject();
+            json.put("path", fullImagePath);
+            json.put("date", dateFromImagePath(fullImagePath));
+
+            PluginResult r = new PluginResult(PluginResult.Status.OK, json);
+            r.setKeepCallback(true);
+            this.callbackContext.sendPluginResult(r);
+
+            photoCount++;
+            hasImage = thumbnailsCursor.moveToPrevious();
+        }
+        thumbnailsCursor.close();
+
+        // Send empty JSON to indicate the end of photostreaming
+        PluginResult r = new PluginResult(PluginResult.Status.OK, new JSONObject());
+        r.setKeepCallback(true);
+        this.callbackContext.sendPluginResult(r);
+    }
+
 
     private static int getOrientation(String fullImagePath) {
         ExifInterface exif;
