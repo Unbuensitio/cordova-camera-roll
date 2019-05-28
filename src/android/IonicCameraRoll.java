@@ -47,43 +47,42 @@ public class IonicCameraRoll extends CordovaPlugin {
      * Returns all images not in the Camera Roll.
      */
     private void getPhotos(int maxPhotoCount) throws JSONException {
-        int photoCount = 0;
-        boolean hasLimit = maxPhotoCount > 0;
+        int int_position = 0;
+        Uri uri;
+        Cursor cursor;
+        int column_index_data, column_index_folder_name,column_id,thum;
 
-        final String[] projection = { MediaStore.Video.Thumbnails.DATA, MediaStore.Video.Media._ID };
+        String absolutePathOfImage = null;
+        uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
 
-        Context context = this.cordova.getActivity();
-        Cursor thumbnailsCursor = context.getContentResolver().query( MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                projection, // Which columns to return
-                null,       // Return all rows
-                null,
-                null);
+        String[] projection = {MediaStore.MediaColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME,MediaStore.Video.Media._ID,MediaStore.Video.Thumbnails.DATA};
 
-        // Extract the proper column thumbnails
-        int thumbnailColumnIndex = thumbnailsCursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA);
+        final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
+        cursor = getApplicationContext().getContentResolver().query(uri, projection, null, null, orderBy + " DESC");
 
-        boolean hasImage = thumbnailsCursor.moveToLast();
-        while (hasImage && (!hasLimit || photoCount < maxPhotoCount)) {
+        column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        column_index_folder_name = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_DISPLAY_NAME);
+        column_id = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID);
+        thum = cursor.getColumnIndexOrThrow(MediaStore.Video.Thumbnails.DATA);
+
+        while (cursor.moveToNext()) {
+            
             // Get the tiny thumbnail and the full image path
-            int thumbnailImageID = thumbnailsCursor.getInt(thumbnailColumnIndex);
-            String thumbnailPath = thumbnailsCursor.getString(thumbnailImageID);
-            String fullImagePath = uriToFullImage(thumbnailsCursor, context);
+            int thumbnailImageID = cursor.getString(column_id);
+            String thumbnailPath = cursor.getString(thum);
+            String absolutePathOfImage = cursor.getString(column_index_data);
 
             // Create the result object
             JSONObject json = new JSONObject();
-            json.put("path", fullImagePath);
+            json.put("path", absolutePathOfImage);
             json.put("thumbnailPath", thumbnailPath);
-            json.put("orientation", getOrientation(fullImagePath));
-            json.put("date", dateFromImagePath(fullImagePath));
 
             PluginResult r = new PluginResult(PluginResult.Status.OK, json);
             r.setKeepCallback(true);
             this.callbackContext.sendPluginResult(r);
-
-            photoCount++;
-            hasImage = thumbnailsCursor.moveToPrevious();
+		
         }
-        thumbnailsCursor.close();
+        cursor.close();
 
         // Send empty JSON to indicate the end of photostreaming
         PluginResult r = new PluginResult(PluginResult.Status.OK, new JSONObject());
