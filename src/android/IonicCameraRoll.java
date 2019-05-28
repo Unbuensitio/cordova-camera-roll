@@ -103,15 +103,15 @@ public class IonicCameraRoll extends CordovaPlugin {
         final String[] projection = { MediaStore.MediaColumns.DATA, MediaStore.Video.Thumbnails.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME, MediaStore.Video.Media._ID };
 
         Context context = this.cordova.getActivity();
-        /*Cursor thumbnailsCursor = context.getContentResolver().query( MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+        Cursor thumbnailsCursor = context.getContentResolver().query( MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
                 projection, // Which columns to return
                 null,       // Return all rows
                 null,
-                null);*/
+                null);
 	    
-	final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
+	/*final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
         Cursor thumbnailsCursor = getApplicationContext().getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projection, null, null, orderBy + " DESC");
-
+	*/
         // Extract the proper column thumbnails
         int thumbnailColumnIndex = thumbnailsCursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA);
 	column_index_data = thumbnailsCursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
@@ -119,7 +119,7 @@ public class IonicCameraRoll extends CordovaPlugin {
         boolean hasImage = thumbnailsCursor.moveToLast();
         while (hasImage && (!hasLimit || photoCount < maxPhotoCount)) {
             // Get the tiny thumbnail and the full image path
-	    absolutePathOfImage = thumbnailsCursor.getString(column_index_data);
+	    String absolutePathOfImage = thumbnailsCursor.getString(column_index_data);
             String fullImagePath = absolutePathOfImage;
 
             // Create the result object
