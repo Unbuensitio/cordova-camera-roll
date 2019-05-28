@@ -181,6 +181,7 @@
 
                     //Only return movie
                     if ([key isEqualToString:@"MOV"] || [key isEqualToString:@"MP4"] || [key isEqualToString:@"M4V"] || [key isEqualToString:@"3GP"])
+                    {
                         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                         [pluginResult setKeepCallbackAsBool:YES];
                         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
