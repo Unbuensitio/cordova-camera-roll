@@ -163,7 +163,7 @@ public class IonicCameraRoll extends CordovaPlugin {
 	    String absolutePathOfImage = thumbnailsCursor.getString(column_index_data);
             String fullImagePath = absolutePathOfImage;
 	    Bitmap thumbnail = getVidioThumbnail(absolutePathOfImage);
-	    String imagen = convert(thumbnail);
+	    String imagen = "data:image/jpeg;base64," + convert(thumbnail);
 
             // Create the result object
             JSONObject json = new JSONObject();
