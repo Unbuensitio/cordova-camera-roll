@@ -12,6 +12,10 @@
 #import "IonicCameraRoll.h"
 #import <AssetsLibrary/ALAssetRepresentation.h>
 #import <CoreLocation/CoreLocation.h>
+@import AVKit;
+@import AVFoundation;
+@property (nonatomic) AVPlayer *avPlayer; 
+@property (nonatomic) AVPlayerViewController* avPlayerView;
 
 @implementation IonicCameraRoll
 
