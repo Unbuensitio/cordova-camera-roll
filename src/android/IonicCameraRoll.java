@@ -98,8 +98,9 @@ public class IonicCameraRoll extends CordovaPlugin {
     private void getVideos(int maxPhotoCount) throws JSONException {
         int photoCount = 0;
         boolean hasLimit = maxPhotoCount > 0;
+	int column_index_data, column_index_folder_name,column_id,thum;
 
-        final String[] projection = { MediaStore.Video.Thumbnails.DATA, MediaStore.Video.Media._ID };
+        final String[] projection = { MediaStore.MediaColumns.DATA, MediaStore.Video.Thumbnails.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME, MediaStore.Video.Media._ID };
 
         Context context = this.cordova.getActivity();
         Cursor thumbnailsCursor = context.getContentResolver().query( MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
@@ -110,16 +111,17 @@ public class IonicCameraRoll extends CordovaPlugin {
 
         // Extract the proper column thumbnails
         int thumbnailColumnIndex = thumbnailsCursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA);
-
+	column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+	    
         boolean hasImage = thumbnailsCursor.moveToLast();
         while (hasImage && (!hasLimit || photoCount < maxPhotoCount)) {
             // Get the tiny thumbnail and the full image path
-            String fullImagePath = uriToFullImage(thumbnailsCursor, context);
+	    absolutePathOfImage = thumbnailColumnIndex.getString(column_index_data);
+            String fullImagePath = absolutePathOfImage;
 
             // Create the result object
             JSONObject json = new JSONObject();
             json.put("path", fullImagePath);
-            json.put("date", dateFromImagePath(fullImagePath));
 
             PluginResult r = new PluginResult(PluginResult.Status.OK, json);
             r.setKeepCallback(true);
