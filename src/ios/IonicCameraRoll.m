@@ -180,9 +180,26 @@
                         return;
                     }
                     NSString* ruta = obj.absoluteString;
-                    NSURL *videoURL = [self obtainURLForPath:ruta];
-                    UIImage* thumb = [self VideoThumbNail:videoURL];
-                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"thum":thumb, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
+                    
+                    
+                    UIImage *thumbnail;
+                    NSURL *url = [self obtainURLForPath:ruta];
+                    
+                    AVAsset *asset = [AVAsset assetWithURL:url];
+                    AVAssetImageGenerator *generate = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+                    generate.appliesPreferredTrackTransform = YES;
+
+                    NSError *err = NULL;
+                    Float64 quality = 100;
+                    Float64 position = [[options objectForKey:@"position"] floatValue];
+                    CMTime time = CMTimeMakeWithSeconds(position, 1000);
+                    CGImageRef imgRef = [generate copyCGImageAtTime:time actualTime:NULL error:&err];
+                    thumbnail = [[UIImage alloc] initWithCGImage:imgRef];
+                    CGImageRelease(imgRef);
+                    NSData *imageData = UIImageJPEGRepresentation(thumbnail, quality);
+                    
+                    //UIImage* thumb = [self VideoThumbNail:videoURL];
+                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"data:image/jpeg;base64," stringByAppendingString:[imageData base64EncodedStringWithOptions:0], @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                     //CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                     [pluginResult setKeepCallbackAsBool:YES];
                     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -241,7 +258,7 @@
    
      NSLog(@"err==%@, imageRef==%@", err, imgRef);
      return [[UIImage alloc] initWithCGImage:imgRef];
-}*/
+}
 
 - (UIImage *)VideoThumbNail:(NSURL *)videoURL
 {
@@ -249,6 +266,6 @@
     UIImage *thumbnail = [player thumbnailImageAtTime:52.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
     [player stop];
     return thumbnail;
-}
+}*/
 
 @end
