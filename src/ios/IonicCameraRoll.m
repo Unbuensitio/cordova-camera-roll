@@ -191,7 +191,7 @@
 
                     NSError *err = NULL;
                     Float64 quality = 100;
-                    Float64 position = [[options objectForKey:@"position"] floatValue];
+                    Float64 position = 0;
                     CMTime time = CMTimeMakeWithSeconds(position, 1000);
                     CGImageRef imgRef = [generate copyCGImageAtTime:time actualTime:NULL error:&err];
                     thumbnail = [[UIImage alloc] initWithCGImage:imgRef];
