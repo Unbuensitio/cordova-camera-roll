@@ -12,6 +12,7 @@
 #import "IonicCameraRoll.h"
 #import <AssetsLibrary/ALAssetRepresentation.h>
 #import <CoreLocation/CoreLocation.h>
+#import <MediaPlayer/MediaPlayer.h>
 
 @implementation IonicCameraRoll
 
@@ -178,7 +179,7 @@
                         return;
                     }
                     NSString* ruta = obj.absoluteString;
-                    NSString* thumb = [self loadThumbNail:ruta];
+                    NSString* thumb = [self VideoThumbNail:ruta];
                     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"thum":thumb, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                     //CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                     [pluginResult setKeepCallbackAsBool:YES];
@@ -198,7 +199,7 @@
 
 }
 
--(UIImage *)loadThumbNail:(NSURL *)urlVideo {
+/*-(UIImage *)loadThumbNail:(NSURL *)urlVideo {
      
      AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:urlVideo options:nil];
     
@@ -211,6 +212,14 @@
    
      NSLog(@"err==%@, imageRef==%@", err, imgRef);
      return [[UIImage alloc] initWithCGImage:imgRef];
+}*/
+
+- (UIImage *)VideoThumbNail:(NSURL *)videoURL
+{
+    MPMoviePlayerController *player = [[MPMoviePlayerController alloc] initWithContentURL:videoURL];
+    UIImage *thumbnail = [player thumbnailImageAtTime:52.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+    [player stop];
+    return thumbnail;
 }
 
 @end
