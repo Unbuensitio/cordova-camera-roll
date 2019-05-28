@@ -178,7 +178,7 @@
                         return;
                     }
 
-                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"thum":[self generateThumbImage:obj.absoluteString], @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
+                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"thum":[getPlaceholderImageFromVideo:obj.absoluteString], @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                     [pluginResult setKeepCallbackAsBool:YES];
                     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
                     count++;
@@ -196,29 +196,15 @@
 
 }
 
--(UIImage *)generateThumbImage : (NSString *)filepath
-{
-    NSURL *url = [NSURL fileURLWithPath:filepath];
-    
-   /* AVAsset *asset = [AVAsset assetWithURL:url];
-    AVAssetImageGenerator* generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
-    generator.appliesPreferredTrackTransform = YES;
-    UIImage* image = [UIImage imageWithCGImage:[generator copyCGImageAtTime:CMTimeMake(0, 1) actualTime:nil error:nil]];
-    return [UIImageJPEGRepresentation ( image, 1.0) writeToFile:revisedTargetImageName atomically:YES];*/
-    
++(UIImage *)getPlaceholderImageFromVideo:(NSString *)videoURL {
+    NSURL *url = [NSURL URLWithString:videoURL];
     AVAsset *asset = [AVAsset assetWithURL:url];
-
-    //  Get thumbnail at the very start of the video
-    CMTime thumbnailTime = [asset duration];
-    thumbnailTime.value = 25;
-
-    //  Get image from the video at the given time
     AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-
-    CGImageRef imageRef = [imageGenerator copyCGImageAtTime:thumbnailTime actualTime:NULL error:NULL];
+    CMTime time = [asset duration];
+    time.value = 0;
+    CGImageRef imageRef = [imageGenerator copyCGImageAtTime:time actualTime:NULL error:NULL];
     UIImage *thumbnail = [UIImage imageWithCGImage:imageRef];
     CGImageRelease(imageRef);
-
     return thumbnail;
 }
 
