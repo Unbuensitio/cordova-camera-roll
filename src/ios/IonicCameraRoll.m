@@ -155,18 +155,19 @@
     [self.commandDelegate runInBackground:^{
 
         // Enumerate all of the group saved photos, which is our Camera Roll on iOS
-        [library enumerateGroupsWithTypes:ALAssetsGroupSavedPhotos usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+        [assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
 
             // When there are no more images, the group will be nil
             if(group == nil || (hasLimit && count >= limit)) {
                 signalEnumerationEnd();
                 return;
             }
-
-            // Enumarate this group of images
-            [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
-
-                if(hasLimit && count >= limit) {
+            
+            [group setAssetsFilter:[ALAssetsFilter allVideos]];
+            [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop){
+            if (asset)
+            {
+                 if(hasLimit && count >= limit) {
                     signalEnumerationEnd();
                     return;
                 }
@@ -181,16 +182,13 @@
                         return;
                     }
 
-                    //Only return movie
-                    if ([key isEqualToString:@"public.mov"] || [key isEqualToString:@"public.mp4"] || [key isEqualToString:@"public.m4v"] || [key isEqualToString:@"public.3gp"])
-                    {
-                        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
-                        [pluginResult setKeepCallbackAsBool:YES];
-                        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-
-                        count++;
-                    }
-                }];
+                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
+                    [pluginResult setKeepCallbackAsBool:YES];
+                    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                    count++;
+                }];                
+             }
+                
             }];
 
         } failureBlock:^(NSError *error) {
