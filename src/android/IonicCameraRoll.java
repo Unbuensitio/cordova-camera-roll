@@ -115,16 +115,19 @@ public class IonicCameraRoll extends CordovaPlugin {
         // Extract the proper column thumbnails
         int thumbnailColumnIndex = thumbnailsCursor.getColumnIndex(MediaStore.Video.Thumbnails.DATA);
 	column_index_data = thumbnailsCursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+	thum = thumbnailsCursor.getColumnIndexOrThrow(MediaStore.Video.Thumbnails.DATA);
 	    
         boolean hasImage = thumbnailsCursor.moveToLast();
         while (hasImage && (!hasLimit || photoCount < maxPhotoCount)) {
             // Get the tiny thumbnail and the full image path
 	    String absolutePathOfImage = thumbnailsCursor.getString(column_index_data);
             String fullImagePath = absolutePathOfImage;
+	    String thumbnail = thumbnailsCursor.getString(thum);
 
             // Create the result object
             JSONObject json = new JSONObject();
             json.put("path", fullImagePath);
+	    json.put("thumbnailPath", thumbnail);
 
             PluginResult r = new PluginResult(PluginResult.Status.OK, json);
             r.setKeepCallback(true);
