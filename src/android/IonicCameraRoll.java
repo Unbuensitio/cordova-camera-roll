@@ -72,7 +72,7 @@ public class IonicCameraRoll extends CordovaPlugin {
         column_id = thumbnailsCursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID);
         thum = thumbnailsCursor.getColumnIndexOrThrow(MediaStore.Video.Thumbnails.DATA);
 
-        while (cursor.moveToNext()) {
+        while (thumbnailsCursor.moveToNext()) {
             
             // Get the tiny thumbnail and the full image path
             String thumbnailImageID = thumbnailsCursor.getString(column_id);
@@ -89,7 +89,7 @@ public class IonicCameraRoll extends CordovaPlugin {
             this.callbackContext.sendPluginResult(r);
 		
         }
-        cursor.close();
+        thumbnailsCursor.close();
 
         // Send empty JSON to indicate the end of photostreaming
         PluginResult r = new PluginResult(PluginResult.Status.OK, new JSONObject());
