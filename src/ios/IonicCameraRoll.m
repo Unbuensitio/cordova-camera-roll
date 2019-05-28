@@ -200,11 +200,26 @@
 {
     NSURL *url = [NSURL fileURLWithPath:filepath];
     
-    AVAsset *asset = [AVAsset assetWithURL:url];
+   /* AVAsset *asset = [AVAsset assetWithURL:url];
     AVAssetImageGenerator* generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
     generator.appliesPreferredTrackTransform = YES;
     UIImage* image = [UIImage imageWithCGImage:[generator copyCGImageAtTime:CMTimeMake(0, 1) actualTime:nil error:nil]];
-    return [UIImageJPEGRepresentation ( image, 1.0) writeToFile:revisedTargetImageName atomically:YES];
+    return [UIImageJPEGRepresentation ( image, 1.0) writeToFile:revisedTargetImageName atomically:YES];*/
+    
+    AVAsset *asset = [AVAsset assetWithURL:url];
+
+    //  Get thumbnail at the very start of the video
+    CMTime thumbnailTime = [asset duration];
+    thumbnailTime.value = 25;
+
+    //  Get image from the video at the given time
+    AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+
+    CGImageRef imageRef = [imageGenerator copyCGImageAtTime:thumbnailTime actualTime:NULL error:NULL];
+    UIImage *thumbnail = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
+
+    return thumbnail;
 }
 
 @end
