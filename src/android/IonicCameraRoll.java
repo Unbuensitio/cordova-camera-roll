@@ -1,5 +1,27 @@
 package com.drifty.cordova.cameraroll;
 
+import android.content.Context;
+import android.media.MediaScannerConnection;
+import android.os.Environment;
+import android.os.SystemClock;
+import android.provider.MediaStore;
+import android.util.Base64;
+
+import org.apache.cordova.CordovaInterface;
+
+import java.io.FileOutputStream;
+import java.net.URI;
+import java.net.URL;
+import java.net.URISyntaxException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.TimeZone;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
