@@ -10,6 +10,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
