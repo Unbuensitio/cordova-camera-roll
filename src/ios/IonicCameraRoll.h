@@ -2,6 +2,8 @@
 #import <CoreLocation/CoreLocation.h>
 #import <CoreLocation/CLLocationManager.h>
 #import <Cordova/CDVPlugin.h>
+#import <MobileCoreServices/MobileCoreServices.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface IonicCameraRoll : CDVPlugin
 {}
