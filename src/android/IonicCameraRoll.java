@@ -68,7 +68,7 @@ public class IonicCameraRoll extends CordovaPlugin {
         while (cursor.moveToNext()) {
             
             // Get the tiny thumbnail and the full image path
-            int thumbnailImageID = cursor.getString(column_id);
+            String thumbnailImageID = cursor.getString(column_id);
             String thumbnailPath = cursor.getString(thum);
             String absolutePathOfImage = cursor.getString(column_index_data);
 
