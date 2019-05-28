@@ -198,7 +198,7 @@
 
 -(UIImage *)generateThumbImage : (NSString *)filepath
 {
-    /*NSURL *url = [NSURL fileURLWithPath:filepath];
+    NSURL *url = [NSURL fileURLWithPath:filepath];
 
     AVAsset *asset = [AVAsset assetWithURL:url];
     AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc]initWithAsset:asset];
@@ -211,16 +211,7 @@ self.imageGenerator.appliesPreferredTrackTransform = YES;
      CGImageRef imgRef = [self.imageGenerator copyCGImageAtTime:CMTimeMake(i, duration) actualTime:NULL error:nil];
      UIImage* thumbnail = [[UIImage alloc] initWithCGImage:imgRef scale:UIViewContentModeScaleAspectFit orientation:UIImageOrientationUp];
     [thumbnailImages addObject:thumbnail];
-    }*/
-    
-    AVURLAsset *asset1 = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:filepath] options:nil];
-    AVAssetImageGenerator *generate1 = [[AVAssetImageGenerator alloc] initWithAsset:asset1];
-    generate1.appliesPreferredTrackTransform = YES;
-    NSError *err = NULL;
-    CMTime time = CMTimeMake(1, 2);
-    CGImageRef oneRef = [generate1 copyCGImageAtTime:time actualTime:NULL error:&err];
-    UIImage *image = [[UIImage alloc] initWithCGImage:oneRef];
-    return image;
+    }
 }
 
 @end
