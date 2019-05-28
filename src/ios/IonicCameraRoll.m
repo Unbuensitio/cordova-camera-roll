@@ -204,8 +204,7 @@
     AVAssetImageGenerator* generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
     generator.appliesPreferredTrackTransform = YES;
     UIImage* image = [UIImage imageWithCGImage:[generator copyCGImageAtTime:CMTimeMake(0, 1) actualTime:nil error:nil]];
-
-    return image;
+    return [UIImageJPEGRepresentation ( image, 1.0) writeToFile:revisedTargetImageName atomically:YES];
 }
 
 @end
