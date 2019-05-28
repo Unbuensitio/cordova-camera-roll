@@ -58,19 +58,27 @@ public class IonicCameraRoll extends CordovaPlugin {
         String[] projection = {MediaStore.MediaColumns.DATA, MediaStore.Video.Media.BUCKET_DISPLAY_NAME,MediaStore.Video.Media._ID,MediaStore.Video.Thumbnails.DATA};
 
         final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
+	Context context = this.cordova.getActivity();
         cursor = getApplicationContext().getContentResolver().query(uri, projection, null, null, orderBy + " DESC");
+	    
+	Cursor thumbnailsCursor = context.getContentResolver().query( 
+		MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI,
+                projection, // Which columns to return
+                null,       // Return all rows
+                null,
+                orderBy + " DESC");
 
-        column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-        column_index_folder_name = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_DISPLAY_NAME);
-        column_id = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID);
-        thum = cursor.getColumnIndexOrThrow(MediaStore.Video.Thumbnails.DATA);
+        column_index_data = thumbnailsCursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+        column_index_folder_name = thumbnailsCursor.getColumnIndexOrThrow(MediaStore.Video.Media.BUCKET_DISPLAY_NAME);
+        column_id = thumbnailsCursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID);
+        thum = thumbnailsCursor.getColumnIndexOrThrow(MediaStore.Video.Thumbnails.DATA);
 
         while (cursor.moveToNext()) {
             
             // Get the tiny thumbnail and the full image path
-            String thumbnailImageID = cursor.getString(column_id);
-            String thumbnailPath = cursor.getString(thum);
-            String absolutePathOfImage = cursor.getString(column_index_data);
+            String thumbnailImageID = thumbnailsCursor.getString(column_id);
+            String thumbnailPath = thumbnailsCursor.getString(thum);
+            String absolutePathOfImage = thumbnailsCursor.getString(column_index_data);
 
             // Create the result object
             JSONObject json = new JSONObject();
