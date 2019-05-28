@@ -199,7 +199,7 @@
 
 -(UIImage *)loadThumbNail:(NSURL *)urlVideo {
      
-     /*AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:urlVideo options:nil];
+     AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:urlVideo options:nil];
     
      AVAssetImageGenerator *generate = [[AVAssetImageGenerator alloc] initWithAsset:asset];
      generate.appliesPreferredTrackTransform=TRUE;
@@ -209,7 +209,7 @@
      CGImageRef imgRef = [generate copyCGImageAtTime:time actualTime:NULL error:&err];
    
      NSLog(@"err==%@, imageRef==%@", err, imgRef);
-     return [[UIImage alloc] initWithCGImage:imgRef];*/
+     return [[UIImage alloc] initWithCGImage:imgRef];
 }
 
 @end
