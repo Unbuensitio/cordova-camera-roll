@@ -179,7 +179,7 @@
                         return;
                     }
                     NSString* ruta = obj.absoluteString;
-                    NSURL *videoURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:ruta]];
+                    NSURL *videoURL = [self obtainURLForPath:ruta];
                     UIImage* thumb = [self VideoThumbNail:videoURL];
                     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"thum":thumb, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                     //CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
@@ -198,6 +198,33 @@
         }];
     }];
 
+}
+
+- (NSURL *) obtainURLForPath:(NSString *)path {
+    if ([path hasPrefix:@"cdvfile://"]) {
+        // use the File API to get the appropriate URL, given the path
+        // based on media plugin's code for obtaining file paths
+        CDVFile *filePlugin = [self.commandDelegate getCommandInstance:@"File"];
+        CDVFilesystemURL *fsURL = [CDVFilesystemURL fileSystemURLWithString:path];
+        NSString *filePath = [filePlugin filesystemPathForURL:fsURL];
+        if (filePath) {
+            return [NSURL URLWithString:[[@"file://" stringByAppendingString:filePath] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        } else {
+            return [NSURL URLWithString:[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        }
+    } else {
+        if ([path rangeOfString:@"://"].location == NSNotFound) {
+            NSString *pathForResource = [self.commandDelegate pathForResource:path];
+            if (pathForResource) {
+                return [NSURL URLWithString:[[@"file://" stringByAppendingString:pathForResource] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            } else {
+                return NULL;
+            }
+        }
+        else {
+            return [NSURL URLWithString:[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        }
+    }
 }
 
 /*-(UIImage *)loadThumbNail:(NSURL *)urlVideo {
