@@ -13,6 +13,7 @@
 #import <AssetsLibrary/ALAssetRepresentation.h>
 #import <CoreLocation/CoreLocation.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import "CDVFile.h"
 
 @implementation IonicCameraRoll
 
