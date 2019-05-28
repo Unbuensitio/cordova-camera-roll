@@ -155,7 +155,7 @@
     [self.commandDelegate runInBackground:^{
 
         // Enumerate all of the group saved photos, which is our Camera Roll on iOS
-        [assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+        [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
 
             // When there are no more images, the group will be nil
             if(group == nil || (hasLimit && count >= limit)) {
