@@ -92,7 +92,7 @@
                 return;
             }
             
-            [group setAssetsFilter:[ALAssetsFilter allVideos]];
+            [group setAssetsFilter:[ALAssetsFilter allPhotos]];
             [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop){
             if (result)
             {
