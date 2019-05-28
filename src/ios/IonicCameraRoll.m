@@ -177,8 +177,8 @@
                         signalEnumerationEnd();
                         return;
                     }
-
-                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"thum":[self loadThumbNail:obj.absoluteString], @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
+                    NSString* ruta = obj.absoluteString;
+                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"thum":[self loadThumbNail:@ruta], @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                     [pluginResult setKeepCallbackAsBool:YES];
                     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
                     count++;
