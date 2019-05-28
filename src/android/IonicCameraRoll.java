@@ -18,6 +18,8 @@ import android.database.Cursor;
 import android.provider.MediaStore;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
