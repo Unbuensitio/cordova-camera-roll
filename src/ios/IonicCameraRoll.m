@@ -84,9 +84,19 @@
             }
 
             // Enumarate this group of images
-            [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+            [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
 
-                if(hasLimit && count >= limit) {
+            // When there are no more images, the group will be nil
+            if(group == nil || (hasLimit && count >= limit)) {
+                signalEnumerationEnd();
+                return;
+            }
+            
+            [group setAssetsFilter:[ALAssetsFilter allVideos]];
+            [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop){
+            if (result)
+            {
+                 if(hasLimit && count >= limit) {
                     signalEnumerationEnd();
                     return;
                 }
@@ -101,20 +111,14 @@
                         return;
                     }
 
-                    //Only return JPG
-                    //if ([key isEqualToString:@"public.jpeg"]) {
-                        // Send the URL for this asset back to the JS callback
-                    if ([key isEqualToString:@"public.mov"] || [key isEqualToString:@"public.mp4"] || [key isEqualToString:@"public.m4v"] || [key isEqualToString:@"public.3gp"])
-                    {   
-                        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
-                        [pluginResult setKeepCallbackAsBool:YES];
-                        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-
-                        count++;
-                    }
-                }];
+                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
+                    [pluginResult setKeepCallbackAsBool:YES];
+                    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                    count++;
+                }];                
+             }
+                
             }];
-
         } failureBlock:^(NSError *error) {
             // Ruh-roh, something bad happened.
             CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
@@ -182,7 +186,7 @@
                         return;
                     }
 
-                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
+                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"thum":[generateThumbImage(obj.absoluteString)], @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                     [pluginResult setKeepCallbackAsBool:YES];
                     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
                     count++;
@@ -198,6 +202,24 @@
         }];
     }];
 
+}
+
+-(UIImage *)generateThumbImage : (NSString *)filepath
+{
+    NSURL *url = [NSURL fileURLWithPath:filepath];
+
+    AVAsset *asset = [AVAsset assetWithURL:url];
+    AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc]initWithAsset:asset];
+self.imageGenerator.appliesPreferredTrackTransform = YES; 
+        CMTime time = [asset duration];
+        time.value = 0;
+        Float duration = CMTimeGetSeconds([myAsset duration]);
+   for(Float i = 0.0; i<duration; i=i+0.1)
+    {
+     CGImageRef imgRef = [self.imageGenerator copyCGImageAtTime:CMTimeMake(i, duration) actualTime:NULL error:nil];
+     UIImage* thumbnail = [[UIImage alloc] initWithCGImage:imgRef scale:UIViewContentModeScaleAspectFit orientation:UIImageOrientationUp];
+    [thumbnailImages addObject:thumbnail];
+    }
 }
 
 @end
