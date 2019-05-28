@@ -180,7 +180,7 @@
                     }
 
                     //Only return movie
-                    if ([key isEqualToString:(@"public.mov"||key) isEqualToString:(@"public.mp4"||key) isEqualToString:(@"public.mpeg"||key) isEqualToString:(@"public.3gp"||key) isEqualToString:(@"public.avi"||key) isEqualToString:(@"public.mpv"||key) isEqualToString:(@"public.mpg"])) {
+                    if ([key isEqualToString:(@"public.mov"||key) isEqualToString:(@"public.mp4"||key) isEqualToString:(@"public.mpeg"||key) isEqualToString:(@"public.3gp"||key) isEqualToString:(@"public.avi"||key) isEqualToString:(@"public.mpv"||key) isEqualToString:(@"public.mpg")]) {
                         // Send the URL for this asset back to the JS callback
                         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                         [pluginResult setKeepCallbackAsBool:YES];
