@@ -71,20 +71,11 @@
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     };
 
-    // Run a background job
+     // Run a background job
     [self.commandDelegate runInBackground:^{
 
         // Enumerate all of the group saved photos, which is our Camera Roll on iOS
         [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
-
-            // When there are no more images, the group will be nil
-            if(group == nil || (hasLimit && count >= limit)) {
-                signalEnumerationEnd();
-                return;
-            }
-
-            // Enumarate this group of images
-            [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
 
             // When there are no more images, the group will be nil
             if(group == nil || (hasLimit && count >= limit)) {
@@ -119,6 +110,7 @@
              }
                 
             }];
+
         } failureBlock:^(NSError *error) {
             // Ruh-roh, something bad happened.
             CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
