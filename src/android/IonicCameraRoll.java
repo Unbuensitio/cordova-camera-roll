@@ -59,7 +59,6 @@ public class IonicCameraRoll extends CordovaPlugin {
 
         final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
 	Context context = this.cordova.getActivity();
-        cursor = getApplicationContext().getContentResolver().query(uri, projection, null, null, orderBy + " DESC");
 	    
 	Cursor thumbnailsCursor = context.getContentResolver().query( 
 		MediaStore.Video.Thumbnails.EXTERNAL_CONTENT_URI,
@@ -78,7 +77,7 @@ public class IonicCameraRoll extends CordovaPlugin {
             // Get the tiny thumbnail and the full image path
             String thumbnailImageID = thumbnailsCursor.getString(column_id);
             String thumbnailPath = thumbnailsCursor.getString(thum);
-            String absolutePathOfImage = thumbnailsCursor.getString(column_index_data);
+            absolutePathOfImage = thumbnailsCursor.getString(column_index_data);
 
             // Create the result object
             JSONObject json = new JSONObject();
