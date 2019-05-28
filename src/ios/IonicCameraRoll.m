@@ -196,7 +196,7 @@
 
 }
 
-+(UIImage *)getPlaceholderImageFromVideo:(NSString *)videoURL {
+-(UIImage *)getPlaceholderImageFromVideo:(NSString *)videoURL {
     NSURL *url = [NSURL URLWithString:videoURL];
     AVAsset *asset = [AVAsset assetWithURL:url];
     AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
