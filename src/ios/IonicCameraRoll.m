@@ -199,19 +199,13 @@
 -(UIImage *)generateThumbImage : (NSString *)filepath
 {
     NSURL *url = [NSURL fileURLWithPath:filepath];
-
+    
     AVAsset *asset = [AVAsset assetWithURL:url];
-    AVAssetImageGenerator *imageGenerator = [[AVAssetImageGenerator alloc]initWithAsset:asset];
-self.imageGenerator.appliesPreferredTrackTransform = YES; 
-        CMTime time = [asset duration];
-        time.value = 0;
-        Float duration = CMTimeGetSeconds([asset duration]);
-   for(Float i = 0.0; i<duration; i=i+0.1)
-    {
-     CGImageRef imgRef = [self.imageGenerator copyCGImageAtTime:CMTimeMake(i, duration) actualTime:NULL error:nil];
-     UIImage* thumbnail = [[UIImage alloc] initWithCGImage:imgRef scale:UIViewContentModeScaleAspectFit orientation:UIImageOrientationUp];
-    [thumbnailImages addObject:thumbnail];
-    }
+    AVAssetImageGenerator* generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+    generator.appliesPreferredTrackTransform = YES;
+    UIImage* image = [UIImage imageWithCGImage:[generator copyCGImageAtTime:CMTimeMake(0, 1) actualTime:nil error:nil]];
+
+    return image;
 }
 
 @end
