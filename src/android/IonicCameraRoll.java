@@ -116,7 +116,7 @@ public class IonicCameraRoll extends CordovaPlugin {
         boolean hasImage = thumbnailsCursor.moveToLast();
         while (hasImage && (!hasLimit || photoCount < maxPhotoCount)) {
             // Get the tiny thumbnail and the full image path
-	    absolutePathOfImage = thumbnailColumnIndex.getString(column_index_data);
+	    absolutePathOfImage = thumbnailsCursor.getString(column_index_data);
             String fullImagePath = absolutePathOfImage;
 
             // Create the result object
