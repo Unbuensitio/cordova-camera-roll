@@ -165,7 +165,7 @@
             
             [group setAssetsFilter:[ALAssetsFilter allVideos]];
             [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop){
-            if (asset)
+            if (result)
             {
                  if(hasLimit && count >= limit) {
                     signalEnumerationEnd();
