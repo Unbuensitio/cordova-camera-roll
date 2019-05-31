@@ -113,10 +113,10 @@
                                     if ([ruta rangeOfString:@"asset/asset.(null)"].location == NSNotFound) {
                                         NSURL *filePath = [self obtainURLForPath:ruta];
                                         NSData *imagenData = [NSData dataWithContentsOfURL:filePath];
-                                        UIImage *img = [UIImage imageWithData:imagenData];
-                                        NSData *imageData = UIImageJPEGRepresentation(img, 1);
+                                        /*UIImage *img = [UIImage imageWithData:imagenData];
+                                        NSData *imageData = UIImageJPEGRepresentation(img, 1);*/
                                         NSString *inicio = @"data:image/jpeg;base64,";
-                                        NSString *final = [imageData base64EncodedStringWithOptions:0];
+                                        NSString *final = [imagenData base64EncodedStringWithOptions:0];
                                         NSString* rutaImagen = [inicio stringByAppendingString:final];
                                         
                                         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": ruta, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
