@@ -76,9 +76,21 @@
 
      // Run a background job
     [self.commandDelegate runInBackground:^{
+        
+      
+        
+        self.requestOptions = [[PHImageRequestOptions alloc] init];
+        self.requestOptions.resizeMode   = PHImageRequestOptionsResizeModeExact;
+        self.requestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+        self.requestOptions.synchronous = YES;
+       
+        
+        
+        
+        
 
         // Enumerate all of the group saved photos, which is our Camera Roll on iOS
-        [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+      /*  [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
 
             // When there are no more images, the group will be nil
             if(group == nil || (hasLimit && count >= limit)) {
@@ -130,7 +142,7 @@
             // Ruh-roh, something bad happened.
             CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-        }];
+        }];*/
     }];
 
 }
