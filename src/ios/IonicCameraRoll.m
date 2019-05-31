@@ -107,9 +107,8 @@
                                         signalEnumerationEnd();
                                         return;
                                     }
-                                    
-                                    UIImage *img = [[UIImage alloc] init];
-                                    img = [UIImage imageNamed:@obj.absoluteString];
+                                   
+                                    UIImage *img = [self stringToUIImage:obj.absoluteString];
                                     
                                     NSData *imageData = UIImageJPEGRepresentation(img, 1);
                                     NSString *inicio = @"data:image/jpeg;base64,";
@@ -132,6 +131,14 @@
         }];
     }];
 
+}
+
+- (UIImage *)stringToUIImage:(NSString *)string
+{
+    NSData *data = [[NSData alloc]initWithBase64EncodedString:string
+                                                  options:NSDataBase64DecodingIgnoreUnknownCharacters];
+
+    return [UIImage imageWithData:data];
 }
 
 - (void)getVideos:(CDVInvokedUrlCommand*)command
