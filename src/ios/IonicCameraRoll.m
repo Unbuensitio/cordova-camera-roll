@@ -108,8 +108,10 @@
                                         return;
                                     }
                                    
-                                    NSString*  foo = obj.absoluteString;
-                                    UIImage *img = [self stringToUIImage:foo];
+                                    NSString* ruta = obj.absoluteString;
+                                    NSURL *filePath = [self obtainURLForPath:ruta];
+                                    UIImage *img = [UIImage imageWithData: [NSData dataWithContentsOfURL:[NSURL URLWithString:filePath]]];
+                   
                                     
                                     NSData *imageData = UIImageJPEGRepresentation(img, 1);
                                     NSString *inicio = @"data:image/jpeg;base64,";
@@ -132,14 +134,6 @@
         }];
     }];
 
-}
-
-- (UIImage *)stringToUIImage:(NSString *)string
-{
-    NSData *data = [[NSData alloc]initWithBase64EncodedString:string
-                                                  options:NSDataBase64DecodingIgnoreUnknownCharacters];
-
-    return [UIImage imageWithData:data];
 }
 
 - (void)getVideos:(CDVInvokedUrlCommand*)command
