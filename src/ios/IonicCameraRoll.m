@@ -86,7 +86,10 @@
             }
             
             [group setAssetsFilter:[ALAssetsFilter allPhotos]];
-            [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop){
+           // [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop){
+            [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:group.numberOfAssets - 1]
+                                                                 options:0
+                                                              usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop){
             if (result)
             {
                  if(hasLimit && count >= limit) {
