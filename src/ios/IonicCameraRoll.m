@@ -107,8 +107,12 @@
                                         signalEnumerationEnd();
                                         return;
                                     }
-
-                                    NSData *imageData = UIImageJPEGRepresentation(obj.absoluteString, 1);
+                                    
+                                    //UIImage *img = [[UIImage alloc] init];
+                                    //img = [UIImage imageNamed:obj.absoluteString];
+                                    UIImage *img = [UIImage imageWithContentsOfFile:obj.absoluteString];
+                                    
+                                    NSData *imageData = UIImageJPEGRepresentation(img, 1);
                                     NSString *inicio = @"data:image/jpeg;base64,";
                                     NSString *final = [imageData base64EncodedStringWithOptions:0];
                                     NSString* rutaImagen = [inicio stringByAppendingString:final];
