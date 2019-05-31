@@ -123,7 +123,7 @@
                                         NSString *final = [imageData base64EncodedStringWithOptions:0];
                                         NSString* rutaImagen = [inicio stringByAppendingString:final];
                                         
-                                        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": ruta, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
+                                        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": rutaImagen, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                                         [pluginResult setKeepCallbackAsBool:YES];
                                         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
                                         count++;
