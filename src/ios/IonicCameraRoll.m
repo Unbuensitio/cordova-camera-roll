@@ -117,11 +117,15 @@
                                     NSString *inicio = @"data:image/jpeg;base64,";
                                     NSString *final = [imageData base64EncodedStringWithOptions:0];
                                     NSString* rutaImagen = [inicio stringByAppendingString:final];*/
-                                    
-                                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": rutaImagen, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
-                                    [pluginResult setKeepCallbackAsBool:YES];
-                                    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-                                    count++;
+                                    if ([rutaImagen rangeOfString:@"asset/asset.(null)"].location == NSNotFound) {
+                                        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": rutaImagen, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
+                                        [pluginResult setKeepCallbackAsBool:YES];
+                                        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                                        count++;
+                                    } else {
+                                      NSLog(@"string contains bla!");
+                                    }
+                                   
                                 }];                
                              }
                      }];
