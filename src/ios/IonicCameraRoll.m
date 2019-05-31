@@ -129,7 +129,7 @@
             // Ruh-roh, something bad happened.
             CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-        }];*/
+        }];
     }];
 
 }
