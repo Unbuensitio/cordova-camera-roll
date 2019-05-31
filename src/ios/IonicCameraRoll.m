@@ -59,8 +59,8 @@
 
     // Grab the asset library
     __block NSUInteger count = 0;
-    //ALAssetsLibrary *library = [IonicCameraRoll defaultAssetsLibrary];
-    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+    ALAssetsLibrary *library = [IonicCameraRoll defaultAssetsLibrary];
+    //ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
 
     // Block called at the end of the photostreaming
     __block bool enumerationEnded = false;
