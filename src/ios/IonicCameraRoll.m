@@ -112,13 +112,13 @@
                                     
                                     if ([ruta rangeOfString:@"asset/asset.(null)"].location == NSNotFound) {
                                         NSURL *filePath = [self obtainURLForPath:ruta];
-                                        UIImage *img = [UIImage imageWithData: [NSData dataWithContentsOfURL:[NSURL URLWithString:filePath]]];
+                                        /*UIImage *img = [UIImage imageWithData: [NSData dataWithContentsOfURL:[NSURL URLWithString:filePath]]];
                                         NSData *imageData = UIImageJPEGRepresentation(img, 1);
                                         NSString *inicio = @"data:image/jpeg;base64,";
                                         NSString *final = [imageData base64EncodedStringWithOptions:0];
-                                        NSString* rutaImagen = [inicio stringByAppendingString:final];
+                                        NSString* rutaImagen = [inicio stringByAppendingString:final];*/
                                         
-                                        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": rutaImagen, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
+                                        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": ruta, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                                         [pluginResult setKeepCallbackAsBool:YES];
                                         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
                                         count++;
