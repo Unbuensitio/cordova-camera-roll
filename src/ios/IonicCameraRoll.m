@@ -108,7 +108,11 @@
                                         return;
                                     }
 
-
+                                    NSData *imageData = UIImageJPEGRepresentation(obj.absoluteString, 1);
+                                    NSString *inicio = @"data:image/jpeg;base64,";
+                                    NSString *final = [imageData base64EncodedStringWithOptions:0];
+                                    NSString* rutaImagen = [inicio stringByAppendingString:final];
+                                    
                                     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                                     [pluginResult setKeepCallbackAsBool:YES];
                                     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
