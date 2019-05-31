@@ -108,7 +108,8 @@
                                         return;
                                     }
                                    
-                                    UIImage *img = [self stringToUIImage:obj.absoluteString];
+                                    NSString*  foo = obj.absoluteString;
+                                    UIImage *img = [self stringToUIImage:foo];
                                     
                                     NSData *imageData = UIImageJPEGRepresentation(img, 1);
                                     NSString *inicio = @"data:image/jpeg;base64,";
