@@ -94,7 +94,7 @@
                             if (result)
                             {
                                  if(hasLimit && count >= limit) {
-                                    signalEnumerationEnd();
+                                    //signalEnumerationEnd();
                                     return;
                                 }
 
@@ -108,20 +108,21 @@
                                         return;
                                     }
                                    
-                                    NSString* rutaImagen = obj.absoluteString;
-                                   /* NSURL *filePath = [self obtainURLForPath:ruta];
-                                    UIImage *img = [UIImage imageWithData: [NSData dataWithContentsOfURL:[NSURL URLWithString:filePath]]];
-                   
                                     
-                                    NSData *imageData = UIImageJPEGRepresentation(img, 1);
-                                    NSString *inicio = @"data:image/jpeg;base64,";
-                                    NSString *final = [imageData base64EncodedStringWithOptions:0];
-                                    NSString* rutaImagen = [inicio stringByAppendingString:final];*/
                                     if ([rutaImagen rangeOfString:@"asset/asset.(null)"].location == NSNotFound) {
+                                        NSString* ruta = obj.absoluteString;
+                                        NSURL *filePath = [self obtainURLForPath:ruta];
+                                        UIImage *img = [UIImage imageWithData: [NSData dataWithContentsOfURL:[NSURL URLWithString:filePath]]];
+                                        NSData *imageData = UIImageJPEGRepresentation(img, 1);
+                                        NSString *inicio = @"data:image/jpeg;base64,";
+                                        NSString *final = [imageData base64EncodedStringWithOptions:0];
+                                        NSString* rutaImagen = [inicio stringByAppendingString:final];
+                                        
                                         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": rutaImagen, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                                         [pluginResult setKeepCallbackAsBool:YES];
                                         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
                                         count++;
+                                        
                                     } else {
                                       NSLog(@"string contains bla!");
                                     }
