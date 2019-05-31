@@ -114,11 +114,10 @@
                                         NSURL *filePath = [self obtainURLForPath:ruta];
                                         NSData *imagenData = [NSData dataWithContentsOfURL:filePath];
                                         UIImage *img = [UIImage imageWithData:imagenData];
-                                       // UIImage *img = [UIImage imageWithData: [NSData dataWithContentsOfURL:[NSURL URLWithString:filePath]]];
-                                        /*NSData *imageData = UIImageJPEGRepresentation(img, 1);
+                                        NSData *imageData = UIImageJPEGRepresentation(img, 1);
                                         NSString *inicio = @"data:image/jpeg;base64,";
                                         NSString *final = [imageData base64EncodedStringWithOptions:0];
-                                        NSString* rutaImagen = [inicio stringByAppendingString:final];*/
+                                        NSString* rutaImagen = [inicio stringByAppendingString:final];
                                         
                                         CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": ruta, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                                         [pluginResult setKeepCallbackAsBool:YES];
