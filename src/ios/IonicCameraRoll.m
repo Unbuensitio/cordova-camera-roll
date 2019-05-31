@@ -90,9 +90,7 @@
            // [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop){
             if (group.numberOfAssets > 0) 
             {
-                    [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:group.numberOfAssets - 1]
-                                                                         options:0
-                                                                      usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop){
+                    [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop){
                             if (result)
                             {
                                  if(hasLimit && count >= limit) {
@@ -117,7 +115,6 @@
                                     count++;
                                 }];                
                              }
-                            *stop = NO;
                      }];
                }                                                        
 
