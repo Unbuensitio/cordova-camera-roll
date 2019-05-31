@@ -77,47 +77,8 @@
      // Run a background job
     [self.commandDelegate runInBackground:^{
         
-      
-        
-        self.requestOptions = [[PHImageRequestOptions alloc] init];
-        self.requestOptions.resizeMode   = PHImageRequestOptionsResizeModeExact;
-        self.requestOptions.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
-        self.requestOptions.synchronous = YES;
-        self.assets = [NSMutableArray arrayWithArray:assets];
-        PHImageManager *manager = [PHImageManager defaultManager];
-
-        // assets contains PHAsset objects.
-        __block UIImage *ima;
-
-        for (PHAsset *asset in self.assets) {
-            // Do something with the asset
-
-                    [manager requestImageForAsset:asset
-                            targetSize:PHImageManagerMaximumSize
-                            contentMode:PHImageContentModeDefault
-                            options:self.requestOptions
-                            resultHandler:^void(UIImage *image, NSDictionary *info) {
-                            ima = image;
-                            NSData *imageData = UIImageJPEGRepresentation(img, 1);
-                            NSString *inicio = @"data:image/jpeg;base64,";
-                            NSString *final = [imageData base64EncodedStringWithOptions:0];
-                            NSString* rutaImagen = [inicio stringByAppendingString:final];
-                                    
-                            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": rutaImagen}];
-                            [pluginResult setKeepCallbackAsBool:YES];
-                            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-                            count++;
-                    }];
-
-
-        }
-        
-        
-        
-        
-
         // Enumerate all of the group saved photos, which is our Camera Roll on iOS
-      /*  [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+       [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
 
             // When there are no more images, the group will be nil
             if(group == nil || (hasLimit && count >= limit)) {
@@ -147,9 +108,8 @@
                                         return;
                                     }
                                     
-                                    //UIImage *img = [[UIImage alloc] init];
-                                    //img = [UIImage imageNamed:obj.absoluteString];
-                                    UIImage *img = [UIImage imageWithContentsOfFile:obj.absoluteString];
+                                    UIImage *img = [[UIImage alloc] init];
+                                    img = [UIImage imageNamed:@obj.absoluteString];
                                     
                                     NSData *imageData = UIImageJPEGRepresentation(img, 1);
                                     NSString *inicio = @"data:image/jpeg;base64,";
