@@ -108,9 +108,9 @@
                                         return;
                                     }
                                    
+                                    NSString* ruta = obj.absoluteString;
                                     
-                                    if ([rutaImagen rangeOfString:@"asset/asset.(null)"].location == NSNotFound) {
-                                        NSString* ruta = obj.absoluteString;
+                                    if ([ruta rangeOfString:@"asset/asset.(null)"].location == NSNotFound) {
                                         NSURL *filePath = [self obtainURLForPath:ruta];
                                         UIImage *img = [UIImage imageWithData: [NSData dataWithContentsOfURL:[NSURL URLWithString:filePath]]];
                                         NSData *imageData = UIImageJPEGRepresentation(img, 1);
