@@ -104,10 +104,8 @@
                         return;
                     }
                     
-                    NSString* ruta = obj.absoluteString;
-                    NSURL *url = [self obtainURLForPath:ruta];
                     
-                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": url, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
+                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
                     [pluginResult setKeepCallbackAsBool:YES];
                     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
                     count++;
