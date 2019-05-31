@@ -8,6 +8,8 @@
 @interface IonicCameraRoll : CDVPlugin
 {}
 
+@property (nonatomic, strong) PHImageRequestOptions *requestOptions;
+
 - (void)getPhotos:(CDVInvokedUrlCommand*)command;
 - (void)getVideos:(CDVInvokedUrlCommand*)command;
 - (void)saveToCameraRoll:(CDVInvokedUrlCommand*)command;
