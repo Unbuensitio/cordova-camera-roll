@@ -59,7 +59,8 @@
 
     // Grab the asset library
     __block NSUInteger count = 0;
-    ALAssetsLibrary *library = [IonicCameraRoll defaultAssetsLibrary];
+    //ALAssetsLibrary *library = [IonicCameraRoll defaultAssetsLibrary];
+    ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
 
     // Block called at the end of the photostreaming
     __block bool enumerationEnded = false;
@@ -87,34 +88,36 @@
             
             [group setAssetsFilter:[ALAssetsFilter allPhotos]];
            // [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop){
-            [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:group.numberOfAssets - 1]
-                                                                 options:0
-                                                              usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop){
-            if (result)
+            if (group.numberOfAssets > 0) 
             {
-                 if(hasLimit && count >= limit) {
-                    signalEnumerationEnd();
-                    return;
-                }
+                    [group enumerateAssetsAtIndexes:[NSIndexSet indexSetWithIndex:group.numberOfAssets - 1]
+                                                                         options:0
+                                                                      usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop){
+                    if (result)
+                    {
+                         if(hasLimit && count >= limit) {
+                            signalEnumerationEnd();
+                            return;
+                        }
 
-                NSDictionary *urls = [result valueForProperty:ALAssetPropertyURLs];
-                NSDate* date = [result valueForProperty:ALAssetPropertyDate];
+                        NSDictionary *urls = [result valueForProperty:ALAssetPropertyURLs];
+                        NSDate* date = [result valueForProperty:ALAssetPropertyDate];
 
-                [urls enumerateKeysAndObjectsUsingBlock:^(id key, NSURL *obj, BOOL *stop) {
+                        [urls enumerateKeysAndObjectsUsingBlock:^(id key, NSURL *obj, BOOL *stop) {
 
-                    if(hasLimit && count >= limit) {
-                        signalEnumerationEnd();
-                        return;
-                    }
-                    
-                    
-                    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
-                    [pluginResult setKeepCallbackAsBool:YES];
-                    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-                    count++;
-                }];                
-             }
-                
+                            if(hasLimit && count >= limit) {
+                                signalEnumerationEnd();
+                                return;
+                            }
+
+
+                            CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path": obj.absoluteString, @"date": [NSNumber numberWithLongLong:date.timeIntervalSince1970*1000]}];
+                            [pluginResult setKeepCallbackAsBool:YES];
+                            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                            count++;
+                        }];                
+                     }
+               }                                                        
             }];
 
         } failureBlock:^(NSError *error) {
