@@ -14,6 +14,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "CDVFile.h"
+#import <Photos/Photos.h>
 
 @implementation IonicCameraRoll
 
