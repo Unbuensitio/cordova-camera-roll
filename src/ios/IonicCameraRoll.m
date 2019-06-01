@@ -46,6 +46,47 @@
  *
  * TODO: This should support block-type reading with a set of images
  */
+
+- (void)getPhotos2:(CDVInvokedUrlCommand*)command
+{
+    PHFetchOptions *options = [[PHFetchOptions alloc] init];
+    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+    options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", PHAssetMediaTypeImage];
+    options.predicate = [NSPredicate predicateWithFormat:@"mediaSubtype == %d", PHAssetMediaSubtypePhotoLive];
+    options.includeAllBurstAssets = NO;
+    PHFetchResult *allLivePhotos = [PHAsset fetchAssetsWithOptions:options];
+    NSLog(@"Get total live count : %ld",(unsigned long)allLivePhotos.count);
+    NSMutableArray *arrAllLiveImagesGroups = [NSMutableArray array];
+
+    for (PHAsset *asset in allLivePhotos) {
+        [asset requestContentEditingInputWithOptions:nil
+                                   completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
+                                       NSURL *urlMov = [contentEditingInput.livePhoto valueForKey:@"videoURL"];
+
+                                       NSMutableArray *arrLive = [NSMutableArray array];
+                                       NSMutableArray *arrSingleLiveImagesGroup = [NSMutableArray array];
+                                       AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:urlMov options:nil];
+                                       AVAssetImageGenerator *generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+                                       generator.requestedTimeToleranceAfter =  kCMTimeZero;
+                                       generator.requestedTimeToleranceBefore =  kCMTimeZero;
+
+                                       for (Float64 i = 0; i < CMTimeGetSeconds(asset.duration) *  5 ; i++){
+                                           @autoreleasepool {
+                                               CMTime time = CMTimeMake(i, 5);
+                                               NSError *err;
+                                               CMTime actualTime;
+                                               CGImageRef image = [generator copyCGImageAtTime:time actualTime:&actualTime error:&err];
+                                               UIImage *generatedImage = [[UIImage alloc] initWithCGImage:image scale:1.0 orientation:UIImageOrientationDown];
+                                               [arrLive addObject:generatedImage];
+                                               CGImageRelease(image);
+                                           }
+                                       }
+                                       [arrSingleLiveImagesGroup addObject:arrLive];
+                                       [arrAllLiveImagesGroups addObject:arrSingleLiveImagesGroup];
+                                   }];
+    }
+}
+
 - (void)getPhotos:(CDVInvokedUrlCommand*)command
 {
     NSUInteger limit = 0;
