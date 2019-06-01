@@ -86,7 +86,7 @@
                 return;
             }
             
-            [group setAssetsFilter:[ALAssetsFilter allAssets]];
+            [group setAssetsFilter:[ALAssetsFilter allPhotos]];
            // [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop){
             if (group.numberOfAssets > 0) 
             {
