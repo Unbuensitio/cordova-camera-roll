@@ -47,7 +47,7 @@
  * TODO: This should support block-type reading with a set of images
  */
 
-- (void)getPhotos2:(CDVInvokedUrlCommand*)command
+- (void)obtenerLivePhotos:(CDVInvokedUrlCommand*)command
 {
     PHFetchOptions *options = [[PHFetchOptions alloc] init];
     options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
