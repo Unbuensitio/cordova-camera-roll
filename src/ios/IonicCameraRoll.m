@@ -15,7 +15,6 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "CDVFile.h"
 #import <Photos/Photos.h>
-#import <Foundation/NSCompoundPredicate.h>
 
 @implementation IonicCameraRoll
 
@@ -66,7 +65,7 @@
     
     NSPredicate *imagesPredicate = [NSPredicate predicateWithFormat:@"mediaType == %d", PHAssetMediaTypeImage];
     NSPredicate *liveImagesPredicate = [NSPredicate predicateWithFormat:@"mediaSubtype == %d", PHAssetMediaSubtypePhotoLive];
-    options.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [imagesPredicate, liveImagesPredicate]);
+    options.predicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[imagesPredicate, liveImagesPredicate]];
     //options.fetchLimit = 12;
     //options.fetchOffset = 12;
     options.includeAllBurstAssets = NO;
