@@ -75,9 +75,7 @@
                                    completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
                                        NSURL *urlMov = [contentEditingInput.livePhoto valueForKey:@"videoURL"];
                                        NSString *myString = urlMov.absoluteString;
-                                       UIImage *thumbnail;
-                                       //NSMutableArray *arrLive = [NSMutableArray array];
-                                       //NSMutableArray *arrSingleLiveImagesGroup = [NSMutableArray array];
+                                      /* UIImage *thumbnail;
                                        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:urlMov options:nil];
                                        AVAssetImageGenerator *generate = [[AVAssetImageGenerator alloc] initWithAsset:asset];
                                        generate.appliesPreferredTrackTransform = YES;
@@ -91,37 +89,11 @@
                                        NSData *imageData = UIImageJPEGRepresentation(thumbnail, quality);
                                        NSString *inicio = @"data:image/jpeg;base64,";
                                        NSString *final = [imageData base64EncodedStringWithOptions:0];
-                                       NSString* rutaImagen = [inicio stringByAppendingString:final];
-                                       CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path":myString, @"imagen": rutaImagen}];
+                                       NSString* rutaImagen = [inicio stringByAppendingString:final];*/
+                                       CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path":myString}];
                                        [pluginResult setKeepCallbackAsBool:YES];
                                        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
                                        count++;
-                                       //generator.requestedTimeToleranceAfter =  kCMTimeZero;
-                                       //generator.requestedTimeToleranceBefore =  kCMTimeZero;
-
-                                       /*for (Float64 i = 0; i < CMTimeGetSeconds(asset.duration) *  5 ; i++){
-                                           @autoreleasepool {
-                                              
-                                               CMTime time = CMTimeMake(i, 5);
-                                               NSError *err;
-                                               Float64 quality = 100;
-                                               Float64 position = 0;
-                                               CMTime actualTime;
-                                               CGImageRef imgRef = [generator copyCGImageAtTime:time actualTime:&actualTime error:&err];
-                                               thumbnail = [[UIImage alloc] initWithCGImage:imgRef];
-                                               CGImageRelease(imgRef);
-                                               NSData *imageData = UIImageJPEGRepresentation(thumbnail, quality);
-                                               NSString *inicio = @"data:image/jpeg;base64,";
-                                               NSString *final = [imageData base64EncodedStringWithOptions:0];
-                                               NSString* rutaImagen = [inicio stringByAppendingString:final];
-                                               CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"imagen": rutaImagen}];
-                                               [pluginResult setKeepCallbackAsBool:YES];
-                                               [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-                                               // UIImage *generatedImage = [[UIImage alloc] initWithCGImage:image scale:1.0 orientation:UIImageOrientationDown];
-                                              // [arrLive addObject:generatedImage];
-                                               //CGImageRelease(image);
-                                           }
-                                       }*/
                                    }];
     }
 }
