@@ -63,27 +63,52 @@
         [asset requestContentEditingInputWithOptions:nil
                                    completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
                                        NSURL *urlMov = [contentEditingInput.livePhoto valueForKey:@"videoURL"];
-
-                                       NSMutableArray *arrLive = [NSMutableArray array];
-                                       NSMutableArray *arrSingleLiveImagesGroup = [NSMutableArray array];
+                                       UIImage *thumbnail;
+                                       //NSMutableArray *arrLive = [NSMutableArray array];
+                                       //NSMutableArray *arrSingleLiveImagesGroup = [NSMutableArray array];
                                        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:urlMov options:nil];
-                                       AVAssetImageGenerator *generator = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-                                       generator.requestedTimeToleranceAfter =  kCMTimeZero;
-                                       generator.requestedTimeToleranceBefore =  kCMTimeZero;
+                                       AVAssetImageGenerator *generate = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+                                       generate.appliesPreferredTrackTransform = YES;
+                                       NSError *err = NULL;
+                                       Float64 quality = 100;
+                                       Float64 position = 0;
+                                       CMTime time = CMTimeMakeWithSeconds(position, 1000);
+                                       CGImageRef imgRef = [generate copyCGImageAtTime:time actualTime:NULL error:&err];
+                                       thumbnail = [[UIImage alloc] initWithCGImage:imgRef];
+                                       CGImageRelease(imgRef);
+                                       NSData *imageData = UIImageJPEGRepresentation(thumbnail, quality);
+                                       NSString *inicio = @"data:image/jpeg;base64,";
+                                       NSString *final = [imageData base64EncodedStringWithOptions:0];
+                                       NSString* rutaImagen = [inicio stringByAppendingString:final];
+                                       CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"imagen": rutaImagen}];
+                                       [pluginResult setKeepCallbackAsBool:YES];
+                                       [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                                       //generator.requestedTimeToleranceAfter =  kCMTimeZero;
+                                       //generator.requestedTimeToleranceBefore =  kCMTimeZero;
 
-                                       for (Float64 i = 0; i < CMTimeGetSeconds(asset.duration) *  5 ; i++){
+                                       /*for (Float64 i = 0; i < CMTimeGetSeconds(asset.duration) *  5 ; i++){
                                            @autoreleasepool {
+                                              
                                                CMTime time = CMTimeMake(i, 5);
                                                NSError *err;
+                                               Float64 quality = 100;
+                                               Float64 position = 0;
                                                CMTime actualTime;
-                                               CGImageRef image = [generator copyCGImageAtTime:time actualTime:&actualTime error:&err];
-                                               UIImage *generatedImage = [[UIImage alloc] initWithCGImage:image scale:1.0 orientation:UIImageOrientationDown];
-                                               [arrLive addObject:generatedImage];
-                                               CGImageRelease(image);
+                                               CGImageRef imgRef = [generator copyCGImageAtTime:time actualTime:&actualTime error:&err];
+                                               thumbnail = [[UIImage alloc] initWithCGImage:imgRef];
+                                               CGImageRelease(imgRef);
+                                               NSData *imageData = UIImageJPEGRepresentation(thumbnail, quality);
+                                               NSString *inicio = @"data:image/jpeg;base64,";
+                                               NSString *final = [imageData base64EncodedStringWithOptions:0];
+                                               NSString* rutaImagen = [inicio stringByAppendingString:final];
+                                               CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"imagen": rutaImagen}];
+                                               [pluginResult setKeepCallbackAsBool:YES];
+                                               [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                                               // UIImage *generatedImage = [[UIImage alloc] initWithCGImage:image scale:1.0 orientation:UIImageOrientationDown];
+                                              // [arrLive addObject:generatedImage];
+                                               //CGImageRelease(image);
                                            }
-                                       }
-                                       [arrSingleLiveImagesGroup addObject:arrLive];
-                                       [arrAllLiveImagesGroups addObject:arrSingleLiveImagesGroup];
+                                       }*/
                                    }];
     }
 }
