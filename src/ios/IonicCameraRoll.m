@@ -70,6 +70,7 @@
 
     for (int i = 0; i < 13; i++)
     {
+        PHAsset *asset = [allLivePhotos objectAtIndex:i];
     /*for (PHAsset *asset in allLivePhotos) {*/
                                 [asset requestContentEditingInputWithOptions:nil
                                    completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
