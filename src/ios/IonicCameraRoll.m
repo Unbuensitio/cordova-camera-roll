@@ -102,6 +102,10 @@
                                                [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
                                                count++;
                                        }
+                                       else
+                                       {
+                                                NSURL *urlMov = [contentEditingInput.image valueForKey:@"imageURL"];
+                                       }
                                    }];
     }
 }
