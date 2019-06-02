@@ -50,6 +50,14 @@
 
 - (void)obtenerLivePhotos:(CDVInvokedUrlCommand*)command
 {
+    NSUInteger limit = 0;
+    if ([command.arguments count] > 0) {
+        NSString* limitStr = [command.arguments objectAtIndex:0];
+        limit = [limitStr integerValue];
+    }
+    bool hasLimit = limit > 0;
+    __block NSUInteger count = 0;
+    
     PHFetchOptions *options = [[PHFetchOptions alloc] init];
     options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
     options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", PHAssetMediaTypeImage];
@@ -60,9 +68,13 @@
     NSMutableArray *arrAllLiveImagesGroups = [NSMutableArray array];
 
     for (PHAsset *asset in allLivePhotos) {
+        if(hasLimit && count >= limit) {
+            return;
+        }
         [asset requestContentEditingInputWithOptions:nil
                                    completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
                                        NSURL *urlMov = [contentEditingInput.livePhoto valueForKey:@"videoURL"];
+                                       NSString *myString = urlMov.absoluteString;
                                        UIImage *thumbnail;
                                        //NSMutableArray *arrLive = [NSMutableArray array];
                                        //NSMutableArray *arrSingleLiveImagesGroup = [NSMutableArray array];
@@ -80,9 +92,10 @@
                                        NSString *inicio = @"data:image/jpeg;base64,";
                                        NSString *final = [imageData base64EncodedStringWithOptions:0];
                                        NSString* rutaImagen = [inicio stringByAppendingString:final];
-                                       CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"imagen": rutaImagen}];
+                                       CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path":myString, @"imagen": rutaImagen}];
                                        [pluginResult setKeepCallbackAsBool:YES];
                                        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                                       count++;
                                        //generator.requestedTimeToleranceAfter =  kCMTimeZero;
                                        //generator.requestedTimeToleranceBefore =  kCMTimeZero;
 
