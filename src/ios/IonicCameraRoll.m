@@ -62,17 +62,12 @@
     options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
     options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", PHAssetMediaTypeImage];
     options.predicate = [NSPredicate predicateWithFormat:@"mediaSubtype == %d", PHAssetMediaSubtypePhotoLive];
+    options.fetchLimit = 12;
     options.includeAllBurstAssets = NO;
     PHFetchResult *allLivePhotos = [PHAsset fetchAssetsWithOptions:options];
-    NSLog(@"Get total live count : %ld",(unsigned long)allLivePhotos.count);
     //NSMutableArray *arrAllLiveImagesGroups = [NSMutableArray array];
 
     for (PHAsset *asset in allLivePhotos) {
-        if(hasLimit && count >= limit) {
-            
-        }
-        else
-        {
                                 [asset requestContentEditingInputWithOptions:nil
                                    completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
                                        NSURL *urlMov = [contentEditingInput.livePhoto valueForKey:@"videoURL"];
@@ -97,7 +92,6 @@
                                        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
                                        count++;
                                    }];
-        }
     }
 }
 
