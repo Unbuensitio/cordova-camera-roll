@@ -65,13 +65,15 @@
     options.includeAllBurstAssets = NO;
     PHFetchResult *allLivePhotos = [PHAsset fetchAssetsWithOptions:options];
     NSLog(@"Get total live count : %ld",(unsigned long)allLivePhotos.count);
-    NSMutableArray *arrAllLiveImagesGroups = [NSMutableArray array];
+    //NSMutableArray *arrAllLiveImagesGroups = [NSMutableArray array];
 
     for (PHAsset *asset in allLivePhotos) {
         if(hasLimit && count >= limit) {
-            return;
+            
         }
-        [asset requestContentEditingInputWithOptions:nil
+        else
+        {
+                                [asset requestContentEditingInputWithOptions:nil
                                    completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
                                        NSURL *urlMov = [contentEditingInput.livePhoto valueForKey:@"videoURL"];
                                        NSString *myString = urlMov.absoluteString;
@@ -95,6 +97,7 @@
                                        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
                                        count++;
                                    }];
+        }
     }
 }
 
