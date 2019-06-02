@@ -78,27 +78,30 @@
     /*for (PHAsset *asset in allLivePhotos) {*/
                                 [asset requestContentEditingInputWithOptions:nil
                                    completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
-                                       NSURL *urlMov = [contentEditingInput.livePhoto valueForKey:@"videoURL"];
-                                       NSString *myString = urlMov.absoluteString;
-                                       UIImage *thumbnail;
-                                       AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:urlMov options:nil];
-                                       AVAssetImageGenerator *generate = [[AVAssetImageGenerator alloc] initWithAsset:asset];
-                                       generate.appliesPreferredTrackTransform = YES;
-                                       NSError *err = NULL;
-                                       Float64 quality = 100;
-                                       Float64 position = 0;
-                                       CMTime time = CMTimeMakeWithSeconds(position, 1000);
-                                       CGImageRef imgRef = [generate copyCGImageAtTime:time actualTime:NULL error:&err];
-                                       thumbnail = [[UIImage alloc] initWithCGImage:imgRef];
-                                       CGImageRelease(imgRef);
-                                       NSData *imageData = UIImageJPEGRepresentation(thumbnail, quality);
-                                       NSString *inicio = @"data:image/jpeg;base64,";
-                                       NSString *final = [imageData base64EncodedStringWithOptions:0];
-                                       NSString* rutaImagen = [inicio stringByAppendingString:final];
-                                       CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path":myString,@"imagen":rutaImagen}];
-                                       [pluginResult setKeepCallbackAsBool:YES];
-                                       [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-                                       count++;
+                                       if(asset.mediaSubtypes == PHAssetMediaSubtypePhotoLive)
+                                       {
+                                               NSURL *urlMov = [contentEditingInput.livePhoto valueForKey:@"videoURL"];
+                                               NSString *myString = urlMov.absoluteString;
+                                               UIImage *thumbnail;
+                                               AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:urlMov options:nil];
+                                               AVAssetImageGenerator *generate = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+                                               generate.appliesPreferredTrackTransform = YES;
+                                               NSError *err = NULL;
+                                               Float64 quality = 100;
+                                               Float64 position = 0;
+                                               CMTime time = CMTimeMakeWithSeconds(position, 1000);
+                                               CGImageRef imgRef = [generate copyCGImageAtTime:time actualTime:NULL error:&err];
+                                               thumbnail = [[UIImage alloc] initWithCGImage:imgRef];
+                                               CGImageRelease(imgRef);
+                                               NSData *imageData = UIImageJPEGRepresentation(thumbnail, quality);
+                                               NSString *inicio = @"data:image/jpeg;base64,";
+                                               NSString *final = [imageData base64EncodedStringWithOptions:0];
+                                               NSString* rutaImagen = [inicio stringByAppendingString:final];
+                                               CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path":myString,@"imagen":rutaImagen}];
+                                               [pluginResult setKeepCallbackAsBool:YES];
+                                               [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                                               count++;
+                                       }
                                    }];
     }
 }
