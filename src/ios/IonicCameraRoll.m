@@ -68,7 +68,7 @@
     PHFetchResult *allLivePhotos = [PHAsset fetchAssetsWithOptions:options];
     //NSMutableArray *arrAllLiveImagesGroups = [NSMutableArray array];
 
-    for (int i = 0; i < 13; i++)
+    for (int i = 12; i < 24; i++)
     {
         PHAsset *asset = [allLivePhotos objectAtIndex:i];
     /*for (PHAsset *asset in allLivePhotos) {*/
