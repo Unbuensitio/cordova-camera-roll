@@ -87,7 +87,7 @@
                                        NSString *inicio = @"data:image/jpeg;base64,";
                                        NSString *final = [imageData base64EncodedStringWithOptions:0];
                                        NSString* rutaImagen = [inicio stringByAppendingString:final];
-                                       CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path":myString}];
+                                       CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path":myString,@"imagen":rutaImagen}];
                                        [pluginResult setKeepCallbackAsBool:YES];
                                        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
                                        count++;
