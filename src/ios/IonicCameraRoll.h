@@ -4,6 +4,7 @@
 #import <Cordova/CDVPlugin.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <AVFoundation/AVFoundation.h>
+#import <Foundation/NSCompoundPredicate.h>
 
 @interface IonicCameraRoll : CDVPlugin
 {}
