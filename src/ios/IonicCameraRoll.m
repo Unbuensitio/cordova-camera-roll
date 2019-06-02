@@ -68,7 +68,9 @@
     PHFetchResult *allLivePhotos = [PHAsset fetchAssetsWithOptions:options];
     //NSMutableArray *arrAllLiveImagesGroups = [NSMutableArray array];
 
-    /*for (PHAsset *asset in allLivePhotos) {
+    for (int i = 0; i < 13; i++)
+    {
+    /*for (PHAsset *asset in allLivePhotos) {*/
                                 [asset requestContentEditingInputWithOptions:nil
                                    completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
                                        NSURL *urlMov = [contentEditingInput.livePhoto valueForKey:@"videoURL"];
@@ -93,7 +95,7 @@
                                        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
                                        count++;
                                    }];
-    }*/
+    }
 }
 
 - (void)getPhotos:(CDVInvokedUrlCommand*)command
