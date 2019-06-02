@@ -72,7 +72,7 @@
                                    completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
                                        NSURL *urlMov = [contentEditingInput.livePhoto valueForKey:@"videoURL"];
                                        NSString *myString = urlMov.absoluteString;
-                                      /* UIImage *thumbnail;
+                                       UIImage *thumbnail;
                                        AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:urlMov options:nil];
                                        AVAssetImageGenerator *generate = [[AVAssetImageGenerator alloc] initWithAsset:asset];
                                        generate.appliesPreferredTrackTransform = YES;
@@ -86,7 +86,7 @@
                                        NSData *imageData = UIImageJPEGRepresentation(thumbnail, quality);
                                        NSString *inicio = @"data:image/jpeg;base64,";
                                        NSString *final = [imageData base64EncodedStringWithOptions:0];
-                                       NSString* rutaImagen = [inicio stringByAppendingString:final];*/
+                                       NSString* rutaImagen = [inicio stringByAppendingString:final];
                                        CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path":myString}];
                                        [pluginResult setKeepCallbackAsBool:YES];
                                        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
