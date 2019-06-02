@@ -15,7 +15,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "CDVFile.h"
 #import <Photos/Photos.h>
-#import <NSCompoundPredicate/NSCompoundPredicate.h>
+#import <Foundation/NSCompoundPredicate.h>
 
 @implementation IonicCameraRoll
 
