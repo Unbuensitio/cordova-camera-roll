@@ -62,13 +62,13 @@
     options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
     options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", PHAssetMediaTypeImage];
     options.predicate = [NSPredicate predicateWithFormat:@"mediaSubtype == %d", PHAssetMediaSubtypePhotoLive];
-    options.fetchLimit = 12;
-    options.fetchOffset = 12;
+    //options.fetchLimit = 12;
+    //options.fetchOffset = 12;
     options.includeAllBurstAssets = NO;
     PHFetchResult *allLivePhotos = [PHAsset fetchAssetsWithOptions:options];
     //NSMutableArray *arrAllLiveImagesGroups = [NSMutableArray array];
 
-    for (PHAsset *asset in allLivePhotos) {
+    /*for (PHAsset *asset in allLivePhotos) {
                                 [asset requestContentEditingInputWithOptions:nil
                                    completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
                                        NSURL *urlMov = [contentEditingInput.livePhoto valueForKey:@"videoURL"];
@@ -93,7 +93,7 @@
                                        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
                                        count++;
                                    }];
-    }
+    }*/
 }
 
 - (void)getPhotos:(CDVInvokedUrlCommand*)command
