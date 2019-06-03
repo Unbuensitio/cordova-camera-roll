@@ -113,13 +113,17 @@
                                                 CGImageRef imgRef = [ciContext createCGImage:ciImage fromRect:[ciImage extent]];
                                                 UIImage* thumbnail = [[UIImage alloc] initWithCGImage:imgRef];
                                            
-                                                NSString *rutaImagen = @"ok";
+                                                NSString *rutaImagen;
                                                 NSData *imageData = UIImageJPEGRepresentation(thumbnail, 100);
                                                 if(imageData)
                                                 {
                                                     NSString *inicio = @"data:image/jpeg;base64,";
                                                     NSString *final = [imageData base64EncodedStringWithOptions:0];
-                                                    NSString* rutaImagen = [inicio stringByAppendingString:final];
+                                                    rutaImagen = [inicio stringByAppendingString:final];
+                                                }
+                                                else
+                                                {
+                                                    rutaImagen = @"ok";
                                                 }
                                            
                                                 CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"imagen":rutaImagen}];
