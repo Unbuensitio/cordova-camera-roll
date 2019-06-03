@@ -104,7 +104,7 @@
                                        }
                                        else
                                        {
-                                                NSURL *urlMov = [contentEditingInput.image valueForKey:@"imageURL"];
+                                                CIImage *image = [CIImage imageWithContentsOfURL:contentEditingInput.fullSizeImageURL];
                                        }
                                    }];
     }
