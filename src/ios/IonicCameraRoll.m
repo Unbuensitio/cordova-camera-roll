@@ -108,7 +108,7 @@
                                        }
                                        else
                                        {
-                                                CIImage *image = [CIImage imageWithContentsOfURL:contentEditingInput.fullSizeImageURL];
+                                                CIImage *ciImage = [CIImage imageWithContentsOfURL:contentEditingInput.fullSizeImageURL];
                                                 UIImage* thumbnail = [UIImage imageWithCIImage:ciImage];
                                                 NSData *imageData = UIImageJPEGRepresentation(thumbnail, 100);
                                                 NSString *inicio = @"data:image/jpeg;base64,";
