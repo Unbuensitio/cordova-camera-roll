@@ -80,7 +80,7 @@
                                    completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
                                        if(asset.mediaSubtypes == PHAssetMediaSubtypePhotoLive)
                                        {
-                                               CIImage *image = [PHLivePhotoEditingContext fullSizeImage: contentEditingInput.livePhoto];
+                                               CIImage *image = [PHLivePhotoEditingContext contentEditingInput.livePhoto: fullSizeImage];
                                        
                                                NSURL *urlMov = [contentEditingInput.livePhoto valueForKey:@"videoURL"];
                                                NSString *myString = urlMov.absoluteString;
