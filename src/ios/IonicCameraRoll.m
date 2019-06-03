@@ -111,7 +111,7 @@
                                                 CIImage *ciImage = [CIImage imageWithContentsOfURL:contentEditingInput.fullSizeImageURL];
                                                 UIImage* thumbnail = [UIImage imageWithCIImage:ciImage];
                                            
-                                                NSString *rutaImagen = "ok";
+                                                NSString *rutaImagen = @"ok";
                                                 /*NSData *imageData = UIImageJPEGRepresentation(thumbnail, 100);
                                                 NSString *inicio = @"data:image/jpeg;base64,";
                                                 NSString *final = [imageData base64EncodedStringWithOptions:0];
