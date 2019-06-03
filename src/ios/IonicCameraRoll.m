@@ -66,7 +66,7 @@
     //NSPredicate *imagesPredicate = [NSPredicate predicateWithFormat:@"mediaType == %d", PHAssetMediaTypeImage];
     //NSPredicate *liveImagesPredicate = [NSPredicate predicateWithFormat:@"mediaSubtype == %d", PHAssetMediaSubtypePhotoLive];
     //options.predicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[imagesPredicate, liveImagesPredicate]];
-    options.fetchLimit = 9;
+    //options.fetchLimit = 9;
     //options.fetchOffset = 12;
     options.includeAllBurstAssets = NO;
     PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeSmartAlbumUserLibrary options:nil];
@@ -75,10 +75,10 @@
     //PHFetchResult *allLivePhotos = [PHAsset fetchAssetsWithOptions:options];
     //NSMutableArray *arrAllLiveImagesGroups = [NSMutableArray array];
 
-    //for (int i = 12; i < 24; i++)
-    //{
-        //PHAsset *asset = [allLivePhotos objectAtIndex:i];
-    for (PHAsset *asset in allLivePhotos) {
+    for (int i = 12; i < 24; i++)
+    {
+        PHAsset *asset = [allLivePhotos objectAtIndex:i];
+    //for (PHAsset *asset in allLivePhotos) {
                                 [asset requestContentEditingInputWithOptions:nil
                                    completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
                                        if(asset.mediaSubtypes == PHAssetMediaSubtypePhotoLive)
