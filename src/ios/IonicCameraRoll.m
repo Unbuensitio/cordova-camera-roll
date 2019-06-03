@@ -80,13 +80,13 @@
                                    completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
                                        if(asset.mediaSubtypes == PHAssetMediaSubtypePhotoLive)
                                        {
-                                               PHLivePhotoEditingContext *context = [[PHLivePhotoEditingContext alloc] initWithLivePhotoEditingInput:contentEditingInput];
+                                               /*PHLivePhotoEditingContext *context = [[PHLivePhotoEditingContext alloc] initWithLivePhotoEditingInput:contentEditingInput];
                                                CIImage *ciImage =  context.fullSizeImage;
-                                               UIImage* thumbnail = [UIImage imageWithCIImage:ciImage];
+                                               UIImage* thumbnail = [UIImage imageWithCIImage:ciImage];*/
                                            
                                                NSURL *urlMov = [contentEditingInput.livePhoto valueForKey:@"videoURL"];
                                                NSString *myString = urlMov.absoluteString;
-                                               /*UIImage *thumbnail;
+                                               UIImage *thumbnail;
                                                AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:urlMov options:nil];
                                                AVAssetImageGenerator *generate = [[AVAssetImageGenerator alloc] initWithAsset:asset];
                                                generate.appliesPreferredTrackTransform = YES;
@@ -96,7 +96,7 @@
                                                CMTime time = CMTimeMakeWithSeconds(position, 1000);
                                                CGImageRef imgRef = [generate copyCGImageAtTime:time actualTime:NULL error:&err];
                                                thumbnail = [[UIImage alloc] initWithCGImage:imgRef];
-                                               CGImageRelease(imgRef);*/
+                                               CGImageRelease(imgRef);
                                                NSData *imageData = UIImageJPEGRepresentation(thumbnail, 100);
                                                NSString *inicio = @"data:image/jpeg;base64,";
                                                NSString *final = [imageData base64EncodedStringWithOptions:0];
@@ -109,6 +109,15 @@
                                        else
                                        {
                                                 CIImage *image = [CIImage imageWithContentsOfURL:contentEditingInput.fullSizeImageURL];
+                                                UIImage* thumbnail = [UIImage imageWithCIImage:ciImage];
+                                                NSData *imageData = UIImageJPEGRepresentation(thumbnail, 100);
+                                                NSString *inicio = @"data:image/jpeg;base64,";
+                                                NSString *final = [imageData base64EncodedStringWithOptions:0];
+                                                NSString* rutaImagen = [inicio stringByAppendingString:final];
+                                                CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path":myString,@"imagen":rutaImagen}];
+                                                [pluginResult setKeepCallbackAsBool:YES];
+                                                [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+                                                count++;
                                        }
                                    }];
     }
