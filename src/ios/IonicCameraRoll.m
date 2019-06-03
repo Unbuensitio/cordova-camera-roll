@@ -83,7 +83,7 @@
                                                PHLivePhotoEditingContext *context = [[PHLivePhotoEditingContext alloc] initWithLivePhotoEditingInput:contentEditingInput];
                                                CIImage *image =  context.fullSizeImage;   
                                            
-                                               NSURL *urlMov = [contentEditingInput.livePhoto valueForKey:@"videoURL"];
+                                               /*NSURL *urlMov = [contentEditingInput.livePhoto valueForKey:@"videoURL"];
                                                NSString *myString = urlMov.absoluteString;
                                                UIImage *thumbnail;
                                                AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:urlMov options:nil];
@@ -95,8 +95,8 @@
                                                CMTime time = CMTimeMakeWithSeconds(position, 1000);
                                                CGImageRef imgRef = [generate copyCGImageAtTime:time actualTime:NULL error:&err];
                                                thumbnail = [[UIImage alloc] initWithCGImage:imgRef];
-                                               CGImageRelease(imgRef);
-                                               NSData *imageData = UIImageJPEGRepresentation(thumbnail, quality);
+                                               CGImageRelease(imgRef);*/
+                                               NSData *imageData = UIImageJPEGRepresentation(thumbnail, 100);
                                                NSString *inicio = @"data:image/jpeg;base64,";
                                                NSString *final = [imageData base64EncodedStringWithOptions:0];
                                                NSString* rutaImagen = [inicio stringByAppendingString:final];
