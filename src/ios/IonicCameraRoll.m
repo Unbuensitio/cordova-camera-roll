@@ -69,7 +69,10 @@
     options.fetchLimit = 9;
     //options.fetchOffset = 12;
     options.includeAllBurstAssets = NO;
-    PHFetchResult *allLivePhotos = [PHAsset fetchAssetsWithOptions:options];
+    PHFetchResult *smartAlbums = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeSmartAlbumUserLibrary options:nil];
+    PHAssetCollection *assetCollection = smartAlbums[0];
+    PHFetchResult *allLivePhotos = [PHAsset fetchAssetsInAssetCollection:assetCollection options:options];
+    //PHFetchResult *allLivePhotos = [PHAsset fetchAssetsWithOptions:options];
     //NSMutableArray *arrAllLiveImagesGroups = [NSMutableArray array];
 
     //for (int i = 12; i < 24; i++)
