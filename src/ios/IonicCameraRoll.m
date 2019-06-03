@@ -81,7 +81,7 @@
                                        if(asset.mediaSubtypes == PHAssetMediaSubtypePhotoLive)
                                        {
                                                PHLivePhotoEditingContext *context = [[PHLivePhotoEditingContext alloc] initWithLivePhotoEditingInput:contentEditingInput];
-                                               CIImage *image =  context.fullSizeImage;   
+                                               CIImage *thumbnail =  context.fullSizeImage;   
                                            
                                                /*NSURL *urlMov = [contentEditingInput.livePhoto valueForKey:@"videoURL"];
                                                NSString *myString = urlMov.absoluteString;
