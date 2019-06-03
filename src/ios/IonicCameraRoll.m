@@ -109,7 +109,8 @@
                                        else
                                        {
                                                 CIImage *ciImage = [CIImage imageWithContentsOfURL:contentEditingInput.fullSizeImageURL];
-                                                CGImageRef imgRef = [createCGImage:ciImage fromRect:[ciImage extent]];
+                                                CIContext *ciContext = [CIContext contextWithOptions:nil];
+                                                CGImageRef imgRef = [ciContext createCGImage:ciImage fromRect:[ciImage extent]];
                                                 UIImage* thumbnail = [[UIImage alloc] initWithCGImage:imgRef];
                                            
                                                 NSString *rutaImagen = @"ok";
