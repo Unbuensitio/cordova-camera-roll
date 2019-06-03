@@ -110,10 +110,12 @@
                                        {
                                                 CIImage *ciImage = [CIImage imageWithContentsOfURL:contentEditingInput.fullSizeImageURL];
                                                 UIImage* thumbnail = [UIImage imageWithCIImage:ciImage];
-                                                NSData *imageData = UIImageJPEGRepresentation(thumbnail, 100);
+                                           
+                                                NSString *rutaImagen = "ok";
+                                                /*NSData *imageData = UIImageJPEGRepresentation(thumbnail, 100);
                                                 NSString *inicio = @"data:image/jpeg;base64,";
                                                 NSString *final = [imageData base64EncodedStringWithOptions:0];
-                                                NSString* rutaImagen = [inicio stringByAppendingString:final];
+                                                NSString* rutaImagen = [inicio stringByAppendingString:final];*/
                                                 CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"imagen":rutaImagen}];
                                                 [pluginResult setKeepCallbackAsBool:YES];
                                                 [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
