@@ -108,7 +108,7 @@
                                        }
                                        else
                                        {
-                                                CIImage *ciImage = [CIImage imageWithContentsOfURL:contentEditingInput.fullSizeImageURL];
+                                                /*CIImage *ciImage = [CIImage imageWithContentsOfURL:contentEditingInput.fullSizeImageURL];
                                                 UIImage* thumbnail = [UIImage imageWithCIImage:ciImage];
                                                 NSData *imageData = UIImageJPEGRepresentation(thumbnail, 100);
                                                 NSString *inicio = @"data:image/jpeg;base64,";
@@ -117,7 +117,7 @@
                                                 CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"imagen":rutaImagen}];
                                                 [pluginResult setKeepCallbackAsBool:YES];
                                                 [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-                                                count++;
+                                                count++;*/
                                        }
                                    }];
     }
