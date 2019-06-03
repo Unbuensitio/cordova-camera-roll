@@ -83,9 +83,9 @@
                                                PHLivePhotoEditingContext *context = [[PHLivePhotoEditingContext alloc] initWithLivePhotoEditingInput:contentEditingInput];
                                                CIImage *thumbnail =  context.fullSizeImage;   
                                            
-                                               /*NSURL *urlMov = [contentEditingInput.livePhoto valueForKey:@"videoURL"];
+                                               NSURL *urlMov = [contentEditingInput.livePhoto valueForKey:@"videoURL"];
                                                NSString *myString = urlMov.absoluteString;
-                                               UIImage *thumbnail;
+                                               /*UIImage *thumbnail;
                                                AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:urlMov options:nil];
                                                AVAssetImageGenerator *generate = [[AVAssetImageGenerator alloc] initWithAsset:asset];
                                                generate.appliesPreferredTrackTransform = YES;
