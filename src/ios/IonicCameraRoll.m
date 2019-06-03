@@ -80,10 +80,24 @@
                                    completionHandler:^(PHContentEditingInput *contentEditingInput, NSDictionary *info) {
                                        if(asset.mediaSubtypes == PHAssetMediaSubtypePhotoLive)
                                        {
-                                               /*PHLivePhotoEditingContext *context = [[PHLivePhotoEditingContext alloc] initWithLivePhotoEditingInput:contentEditingInput];
+                                               PHLivePhotoEditingContext *context = [[PHLivePhotoEditingContext alloc] initWithLivePhotoEditingInput:contentEditingInput];
                                                CIImage *ciImage =  context.fullSizeImage;
-                                               UIImage* thumbnail = [UIImage imageWithCIImage:ciImage];*/
-                                           
+                                               CIContext *ciContext = [CIContext contextWithOptions:nil];
+                                               CGImageRef imgRef = [ciContext createCGImage:ciImage fromRect:[ciImage extent]];
+                                               UIImage* thumbnail = [[UIImage alloc] initWithCGImage:imgRef];
+                                               NSString *rutaImagen;
+                                               NSData *imageData = UIImageJPEGRepresentation(thumbnail, 100);
+                                               if(imageData)
+                                               {
+                                                    NSString *inicio = @"data:image/jpeg;base64,";
+                                                    NSString *final = [imageData base64EncodedStringWithOptions:0];
+                                                    rutaImagen = [inicio stringByAppendingString:final];
+                                               }
+                                               else
+                                               {
+                                                    rutaImagen = @"ok";
+                                               }
+                                               /*UIImage* thumbnail = [UIImage imageWithCIImage:ciImage];
                                                NSURL *urlMov = [contentEditingInput.livePhoto valueForKey:@"videoURL"];
                                                NSString *myString = urlMov.absoluteString;
                                                UIImage *thumbnail;
@@ -100,8 +114,8 @@
                                                NSData *imageData = UIImageJPEGRepresentation(thumbnail, 100);
                                                NSString *inicio = @"data:image/jpeg;base64,";
                                                NSString *final = [imageData base64EncodedStringWithOptions:0];
-                                               NSString* rutaImagen = [inicio stringByAppendingString:final];
-                                               CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"path":myString,@"imagen":rutaImagen}];
+                                               NSString* rutaImagen = [inicio stringByAppendingString:final];*/
+                                               CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"imagen":rutaImagen}];
                                                [pluginResult setKeepCallbackAsBool:YES];
                                                [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
                                                count++;
