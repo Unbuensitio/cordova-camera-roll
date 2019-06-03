@@ -59,14 +59,14 @@
     __block NSUInteger count = 0;
     
     PHFetchOptions *options = [[PHFetchOptions alloc] init];
-    options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+    //options.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
     //options.predicate = [NSPredicate predicateWithFormat:@"mediaType == %d", PHAssetMediaTypeImage];
     //options.predicate = [NSPredicate predicateWithFormat:@"mediaSubtype == %d", PHAssetMediaSubtypePhotoLive];
     
     NSPredicate *imagesPredicate = [NSPredicate predicateWithFormat:@"mediaType == %d", PHAssetMediaTypeImage];
     NSPredicate *liveImagesPredicate = [NSPredicate predicateWithFormat:@"mediaSubtype == %d", PHAssetMediaSubtypePhotoLive];
     options.predicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[imagesPredicate, liveImagesPredicate]];
-    options.fetchLimit = 24;
+    options.fetchLimit = 9;
     //options.fetchOffset = 12;
     options.includeAllBurstAssets = NO;
     PHFetchResult *allLivePhotos = [PHAsset fetchAssetsWithOptions:options];
