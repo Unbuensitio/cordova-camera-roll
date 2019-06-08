@@ -378,6 +378,38 @@
     }
 }
 
+
+- (void)getVideoThumbnail:(CDVInvokedUrlCommand*)command
+{
+    if ([command.arguments count] > 0) {
+        NSString* ruta = [command.arguments objectAtIndex:0];
+    }
+    ALAssetsLibrary *library = [IonicCameraRoll defaultAssetsLibrary];
+                    
+    UIImage *thumbnail;
+    NSURL *url = [self obtainURLForPath:ruta];
+                    
+    AVAsset *asset = [AVAsset assetWithURL:url];
+    AVAssetImageGenerator *generate = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+    generate.appliesPreferredTrackTransform = YES;
+
+    NSError *err = NULL;
+    Float64 quality = 100;
+    Float64 position = 0;
+    CMTime time = CMTimeMakeWithSeconds(position, 1000);
+    CGImageRef imgRef = [generate copyCGImageAtTime:time actualTime:NULL error:&err];
+    thumbnail = [[UIImage alloc] initWithCGImage:imgRef];
+    CGImageRelease(imgRef);
+    NSData *imageData = UIImageJPEGRepresentation(thumbnail, quality);
+                    
+    NSString *inicio = @"data:image/jpeg;base64,";
+    NSString *final = [imageData base64EncodedStringWithOptions:0];
+    NSString* rutaImagen = [inicio stringByAppendingString:final];
+    
+    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"imagen": rutaImagen}];
+    [pluginResult setKeepCallbackAsBool:YES];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
 /*-(UIImage *)loadThumbNail:(NSURL *)urlVideo {
      
      AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:urlVideo options:nil];
