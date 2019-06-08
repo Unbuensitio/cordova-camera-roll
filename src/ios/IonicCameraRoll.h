@@ -11,6 +11,7 @@
 - (void)getPhotos:(CDVInvokedUrlCommand*)command;
 - (void)obtenerLivePhotos:(CDVInvokedUrlCommand*)command;
 - (void)getVideos:(CDVInvokedUrlCommand*)command;
+- (void)getVideoThumbnail:(CDVInvokedUrlCommand*)command;
 - (void)saveToCameraRoll:(CDVInvokedUrlCommand*)command;
 
 @end
