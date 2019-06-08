@@ -402,14 +402,21 @@
     thumbnail = [[UIImage alloc] initWithCGImage:imgRef];
     CGImageRelease(imgRef);
     NSData *imageData = UIImageJPEGRepresentation(thumbnail, quality);
-                    
-    NSString *inicio = @"data:image/jpeg;base64,";
-    NSString *final = [imageData base64EncodedStringWithOptions:0];
-    NSString* rutaImagen = [inicio stringByAppendingString:final];
     
-    CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"imagen": rutaImagen}];
-    [pluginResult setKeepCallbackAsBool:YES];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    if(imageData)
+    {
+         NSString *inicio = @"data:image/jpeg;base64,";
+         NSString *final = [imageData base64EncodedStringWithOptions:0];
+         rutaImagen = [inicio stringByAppendingString:final];
+    }
+    else
+    {
+        rutaImagen = @"ok";
+    }
+    
+     CDVPluginResult *pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"imagen":rutaImagen}];
+     [pluginResult setKeepCallbackAsBool:YES];
+     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 /*-(UIImage *)loadThumbNail:(NSURL *)urlVideo {
      
