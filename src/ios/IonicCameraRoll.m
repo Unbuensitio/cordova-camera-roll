@@ -381,8 +381,9 @@
 
 - (void)getVideoThumbnail:(CDVInvokedUrlCommand*)command
 {
+    NSString* ruta;
     if ([command.arguments count] > 0) {
-        NSString* ruta = [command.arguments objectAtIndex:0];
+            ruta = [command.arguments objectAtIndex:0];
     }
     ALAssetsLibrary *library = [IonicCameraRoll defaultAssetsLibrary];
                     
