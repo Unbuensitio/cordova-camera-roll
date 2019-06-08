@@ -402,6 +402,7 @@
     thumbnail = [[UIImage alloc] initWithCGImage:imgRef];
     CGImageRelease(imgRef);
     NSData *imageData = UIImageJPEGRepresentation(thumbnail, quality);
+    NSString *rutaImagen;
     
     if(imageData)
     {
