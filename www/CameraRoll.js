@@ -8,7 +8,7 @@ cameraRoll.getPhotos = function(successCallback, errorCallback, options) {
 };
 
 cameraRoll.getVideoThumbnail = function(successCallback, errorCallback, options) {
-  const count = options ? options.count : 0;
+  const count = options ? options.ruta : 0;
   exec(successCallback, errorCallback, "CameraRoll", "getVideoThumbnail", [count || 0]);
 };
 
