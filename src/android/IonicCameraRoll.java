@@ -194,7 +194,15 @@ public class IonicCameraRoll extends CordovaPlugin {
 	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
 		bitmap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Images.Thumbnails.MICRO_KIND);
 		if (bitmap != null) {
-		    return bitmap;
+		    String imagen = "data:image/jpeg;base64," + convert(bitmap);
+		    // Create the result object
+		    JSONObject json = new JSONObject();
+		    json.put("path", path);
+		    json.put("imagen", imagen);
+
+		    PluginResult r = new PluginResult(PluginResult.Status.OK, json);
+		    r.setKeepCallback(true);
+		    this.callbackContext.sendPluginResult(r);
 		}
 	    }
 	    // MediaMetadataRetriever is available on API Level 8 but is hidden until API Level 10
