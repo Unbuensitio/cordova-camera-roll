@@ -227,7 +227,16 @@ public class IonicCameraRoll extends CordovaPlugin {
 		} catch (final Exception ignored) {
 		}
 	    }
-	    return bitmap;  
+	    
+	    String imagen = "data:image/jpeg;base64," + convert(bitmap);
+            // Create the result object
+            JSONObject json = new JSONObject();
+            json.put("path", path);
+	    json.put("imagen", imagen);
+
+            PluginResult r = new PluginResult(PluginResult.Status.OK, json);
+            r.setKeepCallback(true);
+	    this.callbackContext.sendPluginResult(r);
     }
 	
     public static Bitmap getVidioThumbnail(String path) {
