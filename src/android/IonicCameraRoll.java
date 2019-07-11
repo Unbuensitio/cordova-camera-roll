@@ -84,7 +84,7 @@ public class IonicCameraRoll extends CordovaPlugin {
             getVideos(args.getInt(0));
             return true;
         }else if(action.equals(ACTION_GET_VIDEOTHUMBNAIL)) {
-	    getVideoThumbnail(String path);
+	    getVideoThumbnail(args.getInt(0));
 	    return true;
 	}
         return false;
