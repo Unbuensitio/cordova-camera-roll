@@ -185,6 +185,47 @@ public class IonicCameraRoll extends CordovaPlugin {
         this.callbackContext.sendPluginResult(r);
     }
 
+    public static Bitmap getVideoThumbnail(String path) {
+	  Bitmap bitmap = null;
+	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
+		bitmap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Images.Thumbnails.MICRO_KIND);
+		if (bitmap != null) {
+		    return bitmap;
+		}
+	    }
+	    // MediaMetadataRetriever is available on API Level 8 but is hidden until API Level 10
+	    Class<?> clazz = null;
+	    Object instance = null;
+	    try {
+		clazz = Class.forName("android.media.MediaMetadataRetriever");
+		instance = clazz.newInstance();
+		final Method method = clazz.getMethod("setDataSource", String.class);
+		method.invoke(instance, path);
+		// The method name changes between API Level 9 and 10.
+		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD) {
+		    bitmap = (Bitmap) clazz.getMethod("captureFrame").invoke(instance);
+		} else {
+		    final byte[] data = (byte[]) clazz.getMethod("getEmbeddedPicture").invoke(instance);
+		    if (data != null) {
+			bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+		    }
+		    if (bitmap == null) {
+			bitmap = (Bitmap) clazz.getMethod("getFrameAtTime").invoke(instance);
+		    }
+		}
+	    } catch (Exception e) {
+		bitmap = null;
+	    } finally {
+		try {
+		    if (instance != null) {
+			clazz.getMethod("release").invoke(instance);
+		    }
+		} catch (final Exception ignored) {
+		}
+	    }
+	    return bitmap;  
+    }
+	
     public static Bitmap getVidioThumbnail(String path) {
 	    Bitmap bitmap = null;
 	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
