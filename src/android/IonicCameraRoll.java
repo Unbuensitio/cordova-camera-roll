@@ -64,6 +64,7 @@ public class IonicCameraRoll extends CordovaPlugin {
 
 	public final String ACTION_GET_PHOTOS = "getPhotos";
 	public final String ACTION_GET_VIDEOS = "getVideos";
+	public final String ACTION_GET_VIDEOTHUMBNAIL = "getVideoThumbnail";
 
 	public final String ACTION_SAVE = "saveToCameraRoll";
 
@@ -74,15 +75,18 @@ public class IonicCameraRoll extends CordovaPlugin {
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         this.callbackContext = callbackContext;
 
-		if (action.equals(ACTION_GET_PHOTOS)) {
-		    getPhotos(args.getInt(0));
-            return true;
+	if (action.equals(ACTION_GET_PHOTOS)) {
+		getPhotos(args.getInt(0));
+            	return true;
         } else if (action.equals(ACTION_SAVE)) {
             // Not implemented yet
         }else if (action.equals(ACTION_GET_VIDEOS)) {
             getVideos(args.getInt(0));
             return true;
-        }
+        }else if(action.equals(ACTION_GET_VIDEOTHUMBNAIL)) {
+	    getVideoThumbnail(String path);
+	    return true;
+	}
         return false;
     }
 
