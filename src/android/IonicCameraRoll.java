@@ -195,15 +195,12 @@ public class IonicCameraRoll extends CordovaPlugin {
 		bitmap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Images.Thumbnails.MINI_KIND);
 		if (bitmap != null) {
 		    String imagen = "data:image/jpeg;base64," + convert(bitmap);
-		    // Create the result object
 		    JSONObject json = new JSONObject();
 		    json.put("path", path);
 		    json.put("imagen", imagen);
-
 		    PluginResult r = new PluginResult(PluginResult.Status.OK, json);
 		    r.setKeepCallback(true);
 		    this.callbackContext.sendPluginResult(r);
-		    return bitmap;
 		}
 	    }
 	    // MediaMetadataRetriever is available on API Level 8 but is hidden until API Level 10
@@ -217,13 +214,34 @@ public class IonicCameraRoll extends CordovaPlugin {
 		// The method name changes between API Level 9 and 10.
 		if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD) {
 		    bitmap = (Bitmap) clazz.getMethod("captureFrame").invoke(instance);
+		    String imagen = "data:image/jpeg;base64," + convert(bitmap);
+		    JSONObject json = new JSONObject();
+		    json.put("path", path);
+		    json.put("imagen", imagen);
+		    PluginResult r = new PluginResult(PluginResult.Status.OK, json);
+		    r.setKeepCallback(true);
+		    this.callbackContext.sendPluginResult(r);
 		} else {
 		    final byte[] data = (byte[]) clazz.getMethod("getEmbeddedPicture").invoke(instance);
 		    if (data != null) {
 			bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+			    String imagen = "data:image/jpeg;base64," + convert(bitmap);
+			    JSONObject json = new JSONObject();
+			    json.put("path", path);
+			    json.put("imagen", imagen);
+			    PluginResult r = new PluginResult(PluginResult.Status.OK, json);
+			    r.setKeepCallback(true);
+			    this.callbackContext.sendPluginResult(r);
 		    }
 		    if (bitmap == null) {
 			bitmap = (Bitmap) clazz.getMethod("getFrameAtTime").invoke(instance);
+			    String imagen = "data:image/jpeg;base64," + convert(bitmap);
+			    JSONObject json = new JSONObject();
+			    json.put("path", path);
+			    json.put("imagen", imagen);
+			    PluginResult r = new PluginResult(PluginResult.Status.OK, json);
+			    r.setKeepCallback(true);
+			    this.callbackContext.sendPluginResult(r);
 		    }
 		}
 	    } catch (Exception e) {
@@ -236,17 +254,11 @@ public class IonicCameraRoll extends CordovaPlugin {
 		} catch (final Exception ignored) {
 		}
 	    }
-	    
-	    String imagen = "data:image/jpeg;base64," + convert(bitmap);
-            // Create the result object
-            JSONObject json = new JSONObject();
-            json.put("path", path);
-	    json.put("imagen", imagen);
 
-            PluginResult r = new PluginResult(PluginResult.Status.OK, json);
+            // Send empty JSON to indicate the end of photostreaming
+            PluginResult r = new PluginResult(PluginResult.Status.OK, new JSONObject());
             r.setKeepCallback(true);
-	    this.callbackContext.sendPluginResult(r);
-	    return bitmap;
+            this.callbackContext.sendPluginResult(r);
     }
 	
     public static Bitmap getVidioThumbnail(String path) {
