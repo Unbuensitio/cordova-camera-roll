@@ -189,7 +189,7 @@ public class IonicCameraRoll extends CordovaPlugin {
         this.callbackContext.sendPluginResult(r);
     }
 
-    private void getVideoThumbnail(String path) throws JSONException {
+    private static Bitmap getVideoThumbnail(String path) throws JSONException {
 	  Bitmap bitmap = null;
 	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
 		bitmap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Images.Thumbnails.MINI_KIND);
@@ -203,7 +203,7 @@ public class IonicCameraRoll extends CordovaPlugin {
 		    PluginResult r = new PluginResult(PluginResult.Status.OK, json);
 		    r.setKeepCallback(true);
 		    this.callbackContext.sendPluginResult(r);
-		    return true;
+		    return bitmap;
 		}
 	    }
 	    // MediaMetadataRetriever is available on API Level 8 but is hidden until API Level 10
@@ -246,6 +246,7 @@ public class IonicCameraRoll extends CordovaPlugin {
             PluginResult r = new PluginResult(PluginResult.Status.OK, json);
             r.setKeepCallback(true);
 	    this.callbackContext.sendPluginResult(r);
+	    return bitmap;
     }
 	
     public static Bitmap getVidioThumbnail(String path) {
