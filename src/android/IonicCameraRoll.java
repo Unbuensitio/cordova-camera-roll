@@ -254,11 +254,6 @@ public class IonicCameraRoll extends CordovaPlugin {
 		} catch (final Exception ignored) {
 		}
 	    }
-
-            // Send empty JSON to indicate the end of photostreaming
-            PluginResult r = new PluginResult(PluginResult.Status.OK, new JSONObject());
-            r.setKeepCallback(true);
-            this.callbackContext.sendPluginResult(r);
     }
 	
     public static Bitmap getVidioThumbnail(String path) {
