@@ -189,7 +189,7 @@ public class IonicCameraRoll extends CordovaPlugin {
         this.callbackContext.sendPluginResult(r);
     }
 
-    private static Bitmap getVideoThumbnail(String path) throws JSONException {
+    private void getVideoThumbnail(String path) throws JSONException {
 	  Bitmap bitmap = null;
 	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
 		bitmap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Images.Thumbnails.MINI_KIND);
