@@ -198,9 +198,9 @@ public class IonicCameraRoll extends CordovaPlugin {
     private void getVideoThumbnail(String path) throws JSONException {
 	  Bitmap bitmap = null;
 	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
-		bitmap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Images.Thumbnails.MICRO_KIND);
+		bitmap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Images.Thumbnails.MINI_KIND);
 		if (bitmap != null) {
-		    String imagen = "data:image/jpeg;base64," + bitmap;
+		    String imagen = "data:image/jpeg;base64," + convert(bitmap);
 		    // Create the result object
 		    JSONObject json = new JSONObject();
 		    json.put("path", path);
@@ -242,7 +242,7 @@ public class IonicCameraRoll extends CordovaPlugin {
 		}
 	    }
 	    
-	    String imagen = "data:image/jpeg;base64," + bitmap;
+	    String imagen = "data:image/jpeg;base64," + convert(bitmap);
             // Create the result object
             JSONObject json = new JSONObject();
             json.put("path", path);
