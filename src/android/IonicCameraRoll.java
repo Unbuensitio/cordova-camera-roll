@@ -200,7 +200,7 @@ public class IonicCameraRoll extends CordovaPlugin {
 	    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
 		bitmap = ThumbnailUtils.createVideoThumbnail(path, MediaStore.Images.Thumbnails.MICRO_KIND);
 		if (bitmap != null) {
-		    String imagen = "data:image/jpeg;base64," + convert(bitmap);
+		    String imagen = "data:image/jpeg;base64," + bitmap;
 		    // Create the result object
 		    JSONObject json = new JSONObject();
 		    json.put("path", path);
@@ -242,7 +242,7 @@ public class IonicCameraRoll extends CordovaPlugin {
 		}
 	    }
 	    
-	    String imagen = "data:image/jpeg;base64," + convert(bitmap);
+	    String imagen = "data:image/jpeg;base64," + bitmap;
             // Create the result object
             JSONObject json = new JSONObject();
             json.put("path", path);
